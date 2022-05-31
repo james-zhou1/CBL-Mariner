@@ -11,6 +11,7 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/boilerplate/hello"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -20,13 +21,19 @@ var (
 
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
+
+	// stamp = timestamp.New("boilerplate", true)
 )
 
 func main() {
+	timestamp.InitCSV("boilerplate", true)
+
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	logger.InitBestEffort(*logFile, *logLevel)
 
 	logger.Log.Info(hello.World())
+	
+	timestamp.Stamp.RecordToCSV("test step", "test action")
 }
