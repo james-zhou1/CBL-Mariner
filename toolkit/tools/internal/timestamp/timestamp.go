@@ -1,11 +1,7 @@
 package timestamp
 
 import (
-	"encoding/csv"
 	"fmt"
-	"io"
-	"io/ioutil"
-	"os"
 	"time"
 )
 
@@ -24,10 +20,11 @@ type timeInfo struct {
 
 // Call at the begining of the main() of a tool using "defer timestamp(time.Now(), "name_of_function")".
 // The tool needs to import "time" too.
-func track(start time.Time, name string) {
+func Track(start time.Time, name string) string {
 	end := time.Now()
 	diff := end.Sub(start)
-	result := timeInfo{toolName, stepName, diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
+	result := fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
+	fmt.Printf(result)
 	return result
 }
 
