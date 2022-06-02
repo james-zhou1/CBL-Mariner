@@ -1,16 +1,18 @@
 package timestamp
 
 import (
-	"log"
+	"fmt"
 	"time"
 )
 
 // Call at the begining of the main() of a tool using "defer timestamp(time.Now(), "name_of_function")".
 // The tool needs to import "time" too.
-func Track(start time.Time, name string) {
+func Track(start time.Time, name string) string {
 	end := time.Now()
 	diff := end.Sub(start)
-	log.Printf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
+	result := fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
+	fmt.Printf(result)
+	return result
 }
 
 // output as a string
