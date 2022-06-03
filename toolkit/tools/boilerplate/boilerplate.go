@@ -25,7 +25,7 @@ var (
 )
 
 func main() {
-	defer timestamp.Track(time.Now(), "BoilerPlate")
+	defer timestamp.TrackToFile(time.Now(), "BoilerPlate", 1, true, os.Std)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
