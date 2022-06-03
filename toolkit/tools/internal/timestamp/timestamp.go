@@ -18,9 +18,6 @@ type timeInfo struct {
 }
 
 var (
-	// data = [][]string{
-	// 	{"Tool Name", "Step Name", "Duration", "Start", "End"},
-	// }
 	data = []timeInfo{}
 )
 
@@ -29,12 +26,7 @@ var (
 func track(start time.Time, toolName string, stepName string, timeRange bool) timeInfo {
 	end := time.Now()
 	diff := end.Sub(start)
-	var result = timeInfo{}
-	result.toolName = name
-	result.start = start
-	result.end = result.end
-	result.duration = diff
-
+	result := timeInfo{toolName, stepName, diff, start, end, timeRange}
 	// output = fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
 	// fmt.Printf(output)
 	return result
