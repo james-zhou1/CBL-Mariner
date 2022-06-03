@@ -10,15 +10,15 @@ import (
 )
 
 type timeInfo struct {
-	toolName	string	// Name of the tool
-	stepName	string	// Name of the step
-	duration	int		// Time to complete the step (ms)
-	start		string	// Start time of the step
-	end		string		// End time for the step
-	timeRange	bool	// Whether to record start and end time
+	toolName  string // Name of the tool
+	stepName  string // Name of the step
+	duration  int    // Time to complete the step (ms)
+	start     string // Start time of the step
+	end       string // End time for the step
+	timeRange bool   // Whether to record start and end time
 }
 
-var(
+var (
 	// data = [][]string{
 	// 	{"Tool Name", "Step Name", "Duration", "Start", "End"},
 	// }
@@ -60,6 +60,7 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	defer writer.flush()
 
 }
+
 // output sth in the trace level?
 // figure out logger package (how to call logger everywhere without passing a parameter)
 
