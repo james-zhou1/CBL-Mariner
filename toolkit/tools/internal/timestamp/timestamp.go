@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"time"
 )
@@ -30,8 +29,14 @@ var (
 func track(start time.Time, name string) timeInfo {
 	end := time.Now()
 	diff := end.Sub(start)
-	result := fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
-	fmt.Printf(result)
+	var result = timeInfo{}
+	result.toolName = name
+	result.start = start
+	result.end = result.end
+	result.duration = diff
+
+	// output = fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
+	// fmt.Printf(output)
 	return result
 }
 
