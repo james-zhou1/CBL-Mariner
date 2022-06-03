@@ -48,34 +48,36 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 
 }
 
-// features: initialize timestamp, flag each run (start & end, wipe out? ),
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
-	file, err := os.Create("build-time.csv")
+	// Create a new .csv file. 
+	file, err := os.Create("build-time.csv") // this step will be moved to the init stage later
 	if err != nil {
-		fmt.Println("Failed to create the csv file", err)
+		fmt.Printf("Failed to create the csv file. %s\n", err)
 	}
 	defer file.Close()
 
+	// Create a new csv writer.
 	writer := csv.NewWriter(file)
-	// defer writer.flush()
+	defer writer.Flush()
 
+	// Run
 	curr := track(start, toolName, stepName, timeRange)
 	if timeRange {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
 	} else {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
 	}
-	
 	if err != nil {
-		fmt.Println("Fail to write to file", err)
+		fmt.Printf("Fail to write to file. %s\n", err)
 	}
 }
 
 // output sth in the trace level?
 // figure out logger package (how to call logger everywhere without passing a parameter)
 
-// next step:
+
+// next step: 
 // create a global instance of timestamp (initialized along with the logger)
 // features: initialize timestamp, flag each run (start & end, wipe out? )
 // make each of these function a method of the timeInfo struct
