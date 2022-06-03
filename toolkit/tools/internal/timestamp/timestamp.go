@@ -11,22 +11,22 @@ import (
 type timeInfo struct {
 	toolName  string // Name of the tool
 	stepName  string // Name of the step
-	duration  int    // Time to complete the step (ms)
+	duration  string    // Time to complete the step (ms)
 	start     string // Start time of the step
 	end       string // End time for the step
 	timeRange bool   // Whether to record start and end time
 }
 
-var (
-	data = []timeInfo{}
-)
+// var (
+// 	data = []timeInfo{}
+// )
 
 // Call at the begining of the main() of a tool using "defer timestamp(time.Now(), "name_of_function")".
 // The tool needs to import "time" too.
 func track(start time.Time, name string) {
 	end := time.Now()
 	diff := end.Sub(start)
-	result := timeInfo{toolName, stepName, diff, start, end, timeRange}
+	result := timeInfo{toolName, stepName, diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
 	// output = fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
 	// fmt.Printf(output)
 	return result
@@ -36,15 +36,15 @@ func track(start time.Time, name string) {
 // make a class output io.Writer
 func TrackToFile(start time.Time, toolName string, stepName string, timeRange bool, writer io.Writer) {
 	curr := track(start, toolName, stepName, timeRange)
-	msg := "Step " + stepName + " in " + toolName + "took " + string(curr.duration) + ". "
+	msg := "Step " + stepName + " in " + toolName + " took " + curr.duration + ". "
 	if timeRange {
 		msg += "Started at " + curr.start + "; ended at " + curr.end + ". "
 	}
-	n, err := io.WriteString(writer, msg)
+	_, err := io.WriteString(writer, msg)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Wrote %d bytes\n", n)
+	// fmt.Println("Wrote %d bytes\n", n)
 
 }
 
@@ -58,8 +58,18 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	defer file.Close()
 
 	writer := csv.NewWriter(file)
-	defer writer.flush()
+	// defer writer.flush()
 
+	curr := track(start, toolName, stepName, timeRange)
+	if timeRange {
+		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
+	} else {
+		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
+	}
+	
+	if err != nil {
+		fmt.Println("Fail to write to file", err)
+	}
 }
 
 // output sth in the trace level?
