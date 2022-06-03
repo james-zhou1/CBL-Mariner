@@ -35,8 +35,12 @@ func track(start time.Time, name string) {
 
 // output as a string
 // make a class output io.Writer
-func TrackToFile(start time.Time, name string, writer io.Writer) {
-	msg := track(start, name)
+func TrackToFile(start time.Time, toolName string, stepName string, timeRange bool, writer io.Writer) {
+	curr := track(start, toolName, stepName, timeRange)
+	msg := "Step " + stepName + " in " + toolName + "took " + string(curr.duration) + ". "
+	if timeRange {
+		msg += "Started at " + curr.start + "; ended at " + curr.end + ". "
+	}
 	n, err := io.WriteString(writer, msg)
 	if err != nil {
 		panic(err)
