@@ -27,7 +27,7 @@ var (
 
 // Call at the begining of the main() of a tool using "defer timestamp(time.Now(), "name_of_function")".
 // The tool needs to import "time" too.
-func track(start time.Time, name string) timeInfo {
+func track(start time.Time, toolName string, stepName string, timeRange bool) timeInfo {
 	end := time.Now()
 	diff := end.Sub(start)
 	result := fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
@@ -37,8 +37,12 @@ func track(start time.Time, name string) timeInfo {
 
 // output as a string
 // make a class output io.Writer
-func TrackToFile(start time.Time, name string, writer io.Writer) {
-	msg := track(start, name)
+func TrackToFile(start time.Time, toolName string, stepName string, timeRange bool, writer io.Writer) {
+	curr := track(start, toolName, stepName, timeRange)
+	msg := "Step " + stepName + " in " + toolName + "took " + string(curr.duration) + ". "
+	if timeRange {
+		msg += "Started at " + curr.start + "; ended at " + curr.end + ". "
+	}
 	n, err := io.WriteString(writer, msg)
 	if err != nil {
 		panic(err)
