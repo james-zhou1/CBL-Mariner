@@ -45,7 +45,6 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Println("Wrote %d bytes\n", n)
 
 }
 
@@ -73,7 +72,6 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	// Run
 	curr := track(start, toolName, stepName, timeRange)
 	if timeRange {
-		// bytesWritten, err := writer.WriteString(curr.toolName + curr.stepName + curr.duration + curr.start + curr.end)
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
 		writer.Write([]string{content})
 	} else {
