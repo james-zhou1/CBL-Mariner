@@ -52,11 +52,12 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
 	//	Read text to rewrite later
-	content, err := ioutil.ReadFile("build-time.csv") // the file is inside the local directory
+	a, err := ioutil.ReadFile("build-time.csv") // the file is inside the local directory
+	content := string(a)
 	if err != nil {
 		fmt.Printf("Fail to read to file. %s\n", err)
 	}
-	fmt.Println(string(content))
+	fmt.Println(content)
 
 	// Create a new .csv file.
 	file, err := os.Create("build-time.csv") // this step will be moved to the init stage later
@@ -73,9 +74,11 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	curr := track(start, toolName, stepName, timeRange)
 	if timeRange {
 		// bytesWritten, err := writer.WriteString(curr.toolName + curr.stepName + curr.duration + curr.start + curr.end)
-		err = writer.Write([]string{string(content), curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
+		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
+		writer.Write([]string{content})
 	} else {
-		err = writer.Write([]string{string(content), curr.toolName, curr.stepName, curr.duration})
+		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
+		writer.Write([]string{content})
 	}
 	if err != nil {
 		fmt.Printf("Fail to write to file. %s\n", err)
