@@ -9,12 +9,12 @@ import (
 )
 
 type timeInfo struct {
-	toolName  string // Name of the tool
-	stepName  string // Name of the step
-	duration  string    // Time to complete the step (ms)
-	start     string // Start time of the step
-	end       string // End time for the step
-	timeRange bool   // Whether to record start and end time
+	toolName  string	// Name of the tool
+	stepName  string	// Name of the step
+	duration  string	// Time to complete the step (ms)
+	start     string	// Start time of the step
+	end       string	// End time for the step
+	timeRange bool		// Whether to record start and end time
 }
 
 // var (
@@ -38,7 +38,9 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 	curr := track(start, toolName, stepName, timeRange)
 	msg := "Step " + stepName + " in " + toolName + " took " + curr.duration + ". "
 	if timeRange {
-		msg += "Started at " + curr.start + "; ended at " + curr.end + ". "
+		msg += "Started at " + curr.start + "; ended at " + curr.end + ". \n"
+	} else {
+		msg += "\n"
 	}
 	_, err := io.WriteString(writer, msg)
 	if err != nil {
