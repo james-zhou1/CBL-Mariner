@@ -10,12 +10,12 @@ import (
 )
 
 type timeInfo struct {
-	toolName  string	// Name of the tool
-	stepName  string	// Name of the step
-	duration  string	// Time to complete the step (ms)
-	start     string	// Start time of the step
-	end       string	// End time for the step
-	timeRange bool		// Whether to record start and end time
+	toolName  string // Name of the tool
+	stepName  string // Name of the step
+	duration  string // Time to complete the step (ms)
+	start     string // Start time of the step
+	end       string // End time for the step
+	timeRange bool   // Whether to record start and end time
 }
 
 // var (
@@ -50,14 +50,6 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
-	//	Read text to rewrite later
-	a, err := ioutil.ReadFile("build-time.csv") // the file is inside the local directory
-	content := string(a)
-	if err != nil {
-		fmt.Printf("Fail to read to file. %s\n", err)
-	}
-	fmt.Println(content)
-
 	// Create a new .csv file.
 	file, err := os.Create("build-time.csv") // this step will be moved to the init stage later
 	if err != nil {
