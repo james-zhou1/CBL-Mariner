@@ -10,11 +10,13 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/file"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/roast/formats"
 
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -54,6 +56,7 @@ var (
 )
 
 func main() {
+	defer timestamp.TrackToFile(time.Now(), "Roast", "1", true, os.Stdout)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
