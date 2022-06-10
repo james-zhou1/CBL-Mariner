@@ -9,12 +9,12 @@ import (
 )
 
 type timeInfo struct {
-	toolName  string	// Name of the tool
-	stepName  string	// Name of the step
-	duration  string	// Time to complete the step (ms)
-	start     string	// Start time of the step
-	end       string	// End time for the step
-	timeRange bool		// Whether to record start and end time
+	toolName  string // Name of the tool
+	stepName  string // Name of the step
+	duration  string // Time to complete the step (ms)
+	start     string // Start time of the step
+	end       string // End time for the step
+	timeRange bool   // Whether to record start and end time
 }
 
 // var (
@@ -27,8 +27,6 @@ func track(start time.Time, name string) {
 	end := time.Now()
 	diff := end.Sub(start)
 	result := timeInfo{toolName, stepName, diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
-	// output = fmt.Sprintf("%s took %dms. Started at %s and ended at %s", name, diff.Nanoseconds()/1000, start, end)
-	// fmt.Printf(output)
 	return result
 }
 
@@ -52,7 +50,7 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
-	// Create a new .csv file. 
+	// Create a new .csv file.
 	file, err := os.Create("build-time.csv") // this step will be moved to the init stage later
 	if err != nil {
 		fmt.Printf("Failed to create the csv file. %s\n", err)
@@ -78,8 +76,7 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 // output sth in the trace level?
 // figure out logger package (how to call logger everywhere without passing a parameter)
 
-
-// next step: 
+// next step:
 // create a global instance of timestamp (initialized along with the logger)
 // features: initialize timestamp, flag each run (start & end, wipe out? )
 // make each of these function a method of the timeInfo struct
