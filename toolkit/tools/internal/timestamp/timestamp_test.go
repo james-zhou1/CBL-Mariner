@@ -36,3 +36,9 @@ func Test_WritetoCSV_range_sleeps(t *testing.T) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(3 * time.Second)
 }
+
+func Test_WritetoCSV_three_times(t *testing.T) {
+	for i := 0; i < 3; i++ {
+		TrackToCSV(time.Now(), "test tool", "test step", true)
+	}
+}
