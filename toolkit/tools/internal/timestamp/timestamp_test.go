@@ -41,4 +41,5 @@ func Test_WritetoCSV_three_times(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
 	}
+	//	Will automate line checking later. For now, run wc -l toolkit/tools/internal/timestamp/build-time.csv to find number of lines in CSV.
 }
