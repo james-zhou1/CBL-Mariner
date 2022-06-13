@@ -66,6 +66,7 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	if timeRange {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
 		writer.Write([]string{content})
+		fmt.Println([]string{content})
 	} else {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
 		writer.Write([]string{content})
