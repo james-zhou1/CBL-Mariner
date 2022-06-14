@@ -49,7 +49,7 @@ func NumberOfLines() int {
 }
 
 //	Run debug test to see print output in debug console.
-func Test_WritetoCSV_three_times(t *testing.T) {
+func Test_WritetoCSV_threeTimes(t *testing.T) {
 	oldLines := NumberOfLines()
 	for i := 0; i < 3; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
