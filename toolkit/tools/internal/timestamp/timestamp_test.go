@@ -4,6 +4,8 @@
 package timestamp
 
 import (
+	"bufio"
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -36,10 +38,20 @@ func Test_WritetoCSV_range_sleeps(t *testing.T) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(3 * time.Second)
 }
+func NumberOfLines() {
+	file, _ := os.Open("build-time.csv")
+	fileScanner := bufio.NewScanner(file)
+	lineCount := 0
+	for fileScanner.Scan() {
+		lineCount++
+	}
+	fmt.Println("number of lines:", lineCount)
+}
 
+//	Run debug test to see print output in debug console.
 func Test_WritetoCSV_three_times(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
 	}
-	//	Will automate line checking later. For now, run wc -l toolkit/tools/internal/timestamp/build-time.csv to find number of lines in CSV.
+	NumberOfLines()
 }
