@@ -76,3 +76,17 @@ func Test_WritetoCSV_nTimes(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func GetLatestTimestamp() string {
+	file, _ := os.Open("build-time.csv")
+	fileScanner := bufio.NewScanner(file)
+	lastLine := ""
+	for fileScanner.Scan() {
+		lastLine = fileScanner.Text()
+	}
+	return lastLine
+}
+
+func Test_WritetoCSV_timingTest(t *testing.T) {
+	fmt.Println(GetLatestTimestamp())
+}
