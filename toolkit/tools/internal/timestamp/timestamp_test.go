@@ -55,7 +55,7 @@ func Test_WritetoCSV_three_times(t *testing.T) {
 	}
 	numLines := NumberOfLines()
 	fmt.Println("Number of lines:", numLines)
-	if false { //numLines != 3 {
+	if numLines != 3 {
 		t.Fail()
 	}
 }
