@@ -64,7 +64,8 @@ func Test_WritetoCSV_threeTimes(t *testing.T) {
 
 //	Tests between 20 to 40 times
 func Test_WritetoCSV_nTimes(t *testing.T) {
-	numTests := rand.Intn(20) + 20
+	rand.Seed(time.Now().UnixNano())
+	numTests := rand.Intn(21) + 20
 	oldLines := NumberOfLines()
 	for i := 0; i < numTests; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
