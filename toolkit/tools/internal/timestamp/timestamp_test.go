@@ -50,12 +50,13 @@ func NumberOfLines() int {
 
 //	Run debug test to see print output in debug console.
 func Test_WritetoCSV_three_times(t *testing.T) {
+	oldLines := NumberOfLines()
 	for i := 0; i < 3; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
 	}
-	numLines := NumberOfLines()
-	fmt.Println("Number of lines:", numLines)
-	if numLines != 3 {
+	newLines := NumberOfLines() - oldLines
+	fmt.Println("Number of new lines:", newLines)
+	if newLines != 3 {
 		t.Fail()
 	}
 }
