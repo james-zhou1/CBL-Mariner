@@ -38,14 +38,14 @@ func Test_WritetoCSV_range_sleeps(t *testing.T) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(3 * time.Second)
 }
-func NumberOfLines() {
+func NumberOfLines() int {
 	file, _ := os.Open("build-time.csv")
 	fileScanner := bufio.NewScanner(file)
 	lineCount := 0
 	for fileScanner.Scan() {
 		lineCount++
 	}
-	fmt.Println("number of lines:", lineCount)
+	return lineCount
 }
 
 //	Run debug test to see print output in debug console.
@@ -53,5 +53,5 @@ func Test_WritetoCSV_three_times(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		TrackToCSV(time.Now(), "test tool", "test step", true)
 	}
-	NumberOfLines()
+	fmt.Println("number of lines:", NumberOfLines())
 }
