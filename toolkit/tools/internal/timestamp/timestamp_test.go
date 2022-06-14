@@ -6,6 +6,7 @@ package timestamp
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"testing"
 	"time"
@@ -57,6 +58,20 @@ func Test_WritetoCSV_threeTimes(t *testing.T) {
 	newLines := NumberOfLines() - oldLines
 	fmt.Println("Number of new lines:", newLines)
 	if newLines != 3 {
+		t.Fail()
+	}
+}
+
+//	Tests between 20 to 40 times
+func Test_WritetoCSV_nTimes(t *testing.T) {
+	numTests := rand.Intn(20) + 20
+	oldLines := NumberOfLines()
+	for i := 0; i < numTests; i++ {
+		TrackToCSV(time.Now(), "test tool", "test step", true)
+	}
+	newLines := NumberOfLines() - oldLines
+	fmt.Println("Number of new lines:", newLines)
+	if newLines != numTests {
 		t.Fail()
 	}
 }
