@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"time"
 )
@@ -51,9 +50,10 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
 	// Create a new .csv file.
-	file, err := os.Create("build-time.csv") // this step will be moved to the init stage later
+	file, err := os.OpenFile("build-time.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644) // not sure what 0644 means but it works
 	if err != nil {
 		fmt.Printf("Failed to create the csv file. %s\n", err)
+		return
 	}
 	defer file.Close()
 
@@ -65,11 +65,8 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	curr := track(start, toolName, stepName, timeRange)
 	if timeRange {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
-		writer.Write([]string{content})
-		fmt.Println([]string{content})
 	} else {
 		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
-		writer.Write([]string{content})
 	}
 	if err != nil {
 		fmt.Printf("Fail to write to file. %s\n", err)
