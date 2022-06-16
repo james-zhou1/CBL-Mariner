@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"testing"
 	"time"
 )
@@ -88,5 +89,8 @@ func GetLatestTimestamp() string {
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
-	fmt.Println(GetLatestTimestamp())
+	latestTimestamp := GetLatestTimestamp()
+	fmt.Println(latestTimestamp)
+	data := strings.Split(latestTimestamp, ",")
+	print(data[2])
 }
