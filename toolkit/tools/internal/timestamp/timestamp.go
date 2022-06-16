@@ -4,8 +4,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-
-	// "io/ioutil"
 	"os"
 	"time"
 )
