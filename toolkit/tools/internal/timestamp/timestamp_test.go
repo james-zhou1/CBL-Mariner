@@ -100,10 +100,7 @@ func Test_WritetoCSV_timingTest(t *testing.T) {
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString("3.[0-9]{9}s", data[2])
-	if !match {
-		t.Fail()
-	}
-	if err != nil {
+	if !match || err != nil {
 		t.Fail()
 	}
 }
