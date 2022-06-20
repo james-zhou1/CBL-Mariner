@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -40,6 +41,12 @@ func Test_WritetoCSV_range_sleeps(t *testing.T) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(3 * time.Second)
 }
+
+func WritetoCSV_range_sleeps() {
+	defer TrackToCSV(time.Now(), "test tool", "test step", true)
+	time.Sleep(3 * time.Second)
+}
+
 func NumberOfLines() int {
 	file, _ := os.Open("build-time.csv")
 	fileScanner := bufio.NewScanner(file)
@@ -89,8 +96,14 @@ func GetLatestTimestamp() string {
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
+	WritetoCSV_range_sleeps()
 	latestTimestamp := GetLatestTimestamp()
-	fmt.Println(latestTimestamp)
 	data := strings.Split(latestTimestamp, ",")
-	print(data[2])
+	match, err := regexp.MatchString("3.[0-9]{9}s", data[2])
+	if !match {
+		t.Fail()
+	}
+	if err != nil {
+		t.Fail()
+	}
 }
