@@ -125,4 +125,8 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	if !match || err != nil {
 		t.Fail()
 	}
+	match, err = regexp.MatchString("[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}", data[4])
+	if !match || err != nil {
+		t.Fail()
+	}
 }
