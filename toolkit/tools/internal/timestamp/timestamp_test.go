@@ -120,7 +120,7 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	if !match || err != nil {
 		t.Fail()
 	}
-	match, err = regexp.MatchString("[0-9]+/.[0-9]+[(µs)(s)]", data[2])
+	match, err = regexp.MatchString("[0-9]+[.][0-9]+[(µs)(s)]", data[2])
 	if !match || err != nil {
 		t.Fail()
 	}
