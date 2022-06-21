@@ -112,11 +112,11 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	println(data[0])
 	println(data[1])
 	println(data[2])
-	match, err := regexp.MatchString(".*", data[0])
+	match, err := regexp.MatchString(".+", data[0])
 	if !match || err != nil {
 		t.Fail()
 	}
-	match, err = regexp.MatchString(".*", data[1])
+	match, err = regexp.MatchString(".+", data[1])
 	if !match || err != nil {
 		t.Fail()
 	}
