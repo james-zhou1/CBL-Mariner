@@ -29,6 +29,11 @@ func Test_WritetoFile_range_sleeps(t *testing.T) {
 	time.Sleep(3 * time.Second)
 }
 
+func WritetoCSV_range_sleeps(seconds time.Duration) {
+	defer TrackToCSV(time.Now(), "test tool", "test step", true)
+	time.Sleep(seconds * time.Second)
+}
+
 func Test_WritetoCSV_range_instant(t *testing.T) {
 	TrackToCSV(time.Now(), "test tool", "test step", true)
 }
@@ -38,11 +43,6 @@ func Test_WritetoCSV_noRange_instant(t *testing.T) {
 }
 
 func Test_WritetoCSV_range_sleeps(t *testing.T) {
-	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-	time.Sleep(3 * time.Second)
-}
-
-func WritetoCSV_range_sleeps() {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(3 * time.Second)
 }
@@ -96,7 +96,7 @@ func GetLatestTimestamp() string {
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
-	WritetoCSV_range_sleeps()
+	WritetoCSV_range_sleeps(3)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString("3.[0-9]{9}s", data[2])
@@ -106,7 +106,7 @@ func Test_WritetoCSV_timingTest(t *testing.T) {
 }
 
 func Test_WritetoCSV_formatTest(t *testing.T) {
-	WritetoCSV_range_sleeps()
+	WritetoCSV_range_sleeps(3)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString(".+", data[0])
