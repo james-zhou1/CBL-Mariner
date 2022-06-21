@@ -109,9 +109,6 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	WritetoCSV_range_sleeps()
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
-	println(data[0])
-	println(data[1])
-	println(data[2])
 	match, err := regexp.MatchString(".+", data[0])
 	if !match || err != nil {
 		t.Fail()
@@ -124,5 +121,12 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	if !match || err != nil {
 		t.Fail()
 	}
-	//,.*,[0-9]+,[0-9]+[(µs)(s)]
+	match, err = regexp.MatchString("[A-Za-z]{3}", data[3])
+	if !match || err != nil {
+		t.Fail()
+	}
+	match, err = regexp.MatchString("[0-9]{1-2}", data[3])
+	if !match || err != nil {
+		t.Fail()
+	}
 }
