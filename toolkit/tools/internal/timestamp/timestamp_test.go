@@ -38,10 +38,6 @@ func Test_WritetoCSV_range_instant(t *testing.T) {
 	WritetoCSV_range_sleeps(0)
 }
 
-func Test_WritetoCSV_noRange_instant(t *testing.T) {
-	TrackToCSV(time.Now(), "test tool", "test step", false)
-}
-
 func Test_WritetoCSV_range_sleeps(t *testing.T) {
 	WritetoCSV_range_sleeps(3)
 }
