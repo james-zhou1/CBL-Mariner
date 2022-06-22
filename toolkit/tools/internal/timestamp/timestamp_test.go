@@ -29,17 +29,18 @@ func Test_WritetoFile_range_sleeps(t *testing.T) {
 	time.Sleep(3 * time.Second)
 }
 
-func WritetoCSV_range_sleeps(seconds time.Duration) {
+func WritetoCSV(seconds time.Duration) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(seconds * time.Second)
 }
 
-func Test_WritetoCSV_range_instant(t *testing.T) {
-	WritetoCSV_range_sleeps(0)
+func Test_WritetoCSV_Instant(t *testing.T) {
+	WritetoCSV(0)
 }
 
-func Test_WritetoCSV_range_sleeps(t *testing.T) {
-	WritetoCSV_range_sleeps(3)
+func Test_WritetoCSV_Delay(t *testing.T) {
+	WritetoCSV(1)
+	WritetoCSV(3)
 }
 
 func NumberOfLines() int {
@@ -52,14 +53,17 @@ func NumberOfLines() int {
 	return lineCount
 }
 
+func WritetoCSV_Multiple(count int) {
+	for i := 0; i < count; i++ {
+		WritetoCSV(0)
+	}
+}
+
 //	Run debug test to see print output in debug console.
 func Test_WritetoCSV_threeTimes(t *testing.T) {
 	oldLines := NumberOfLines()
-	for i := 0; i < 3; i++ {
-		TrackToCSV(time.Now(), "test tool", "test step", true)
-	}
+	WritetoCSV_Multiple(3)
 	newLines := NumberOfLines() - oldLines
-	fmt.Println("Number of new lines:", newLines)
 	if newLines != 3 {
 		t.Fail()
 	}
@@ -91,7 +95,7 @@ func GetLatestTimestamp() string {
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
-	WritetoCSV_range_sleeps(3)
+	WritetoCSV(3)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString("3.[0-9]{9}s", data[2])
@@ -101,7 +105,7 @@ func Test_WritetoCSV_timingTest(t *testing.T) {
 }
 
 func Test_WritetoCSV_formatTest(t *testing.T) {
-	WritetoCSV_range_sleeps(3)
+	WritetoCSV(3)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString(".+", data[0])
