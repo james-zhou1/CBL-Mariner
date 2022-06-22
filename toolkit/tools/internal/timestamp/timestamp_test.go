@@ -93,32 +93,19 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	WritetoCSV(3)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
-	match, err := regexp.MatchString(".+", data[0])
-	if !match || err != nil {
-		t.Fail()
+	exp := [7]string{
+		".+",
+		".+",
+		"[0-9]+[.][0-9]+[(µs)(s)]",
+		"[A-Za-z]{3}",
+		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
+		"[A-Za-z]{3}",
+		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
 	}
-	match, err = regexp.MatchString(".+", data[1])
-	if !match || err != nil {
-		t.Fail()
-	}
-	match, err = regexp.MatchString("[0-9]+[.][0-9]+[(µs)(s)]", data[2])
-	if !match || err != nil {
-		t.Fail()
-	}
-	match, err = regexp.MatchString("[A-Za-z]{3}", data[3])
-	if !match || err != nil {
-		t.Fail()
-	}
-	match, err = regexp.MatchString("[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}", data[4])
-	if !match || err != nil {
-		t.Fail()
-	}
-	match, err = regexp.MatchString("[A-Za-z]{3}", data[5])
-	if !match || err != nil {
-		t.Fail()
-	}
-	match, err = regexp.MatchString("[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}", data[6])
-	if !match || err != nil {
-		t.Fail()
+	for i := 0; i < 7; i++ {
+		match, err := regexp.MatchString(exp[i], data[i])
+		if !match || err != nil {
+			t.Fail()
+		}
 	}
 }
