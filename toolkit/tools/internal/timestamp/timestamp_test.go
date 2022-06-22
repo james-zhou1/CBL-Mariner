@@ -75,14 +75,18 @@ func GetLatestTimestamp() string {
 	return lastLine
 }
 
-func Test_WritetoCSV_timingTest(t *testing.T) {
-	WritetoCSV(3)
+func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
+	WritetoCSV(time)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
-	match, err := regexp.MatchString("3.[0-9]{9}s", data[2])
+	match, err := regexp.MatchString("3.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
 	if !match || err != nil {
 		t.Fail()
 	}
+}
+
+func Test_WritetoCSV_timingTest(t *testing.T) {
+	WritetoCSV_timingTest(3, t)
 }
 
 func Test_WritetoCSV_formatTest(t *testing.T) {
