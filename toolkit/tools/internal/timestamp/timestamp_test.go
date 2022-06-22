@@ -34,11 +34,8 @@ func WritetoCSV(seconds time.Duration) {
 	time.Sleep(seconds * time.Second)
 }
 
-func Test_WritetoCSV_Instant(t *testing.T) {
-	WritetoCSV(0)
-}
-
 func Test_WritetoCSV_Delay(t *testing.T) {
+	WritetoCSV(0)
 	WritetoCSV(1)
 	WritetoCSV(3)
 }
