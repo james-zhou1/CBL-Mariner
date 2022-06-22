@@ -50,20 +50,21 @@ func NumberOfLines() int {
 	return lineCount
 }
 
-func WritetoCSV_Multiple(count int) {
+func WritetoCSV_MultipleLines(count int, t *testing.T) {
+	oldLines := NumberOfLines()
 	for i := 0; i < count; i++ {
 		WritetoCSV(0)
+	}
+	newLines := NumberOfLines() - oldLines
+	if newLines != count {
+		t.Fail()
 	}
 }
 
 //	Run debug test to see print output in debug console.
-func Test_WritetoCSV_threeTimes(t *testing.T) {
-	oldLines := NumberOfLines()
-	WritetoCSV_Multiple(3)
-	newLines := NumberOfLines() - oldLines
-	if newLines != 3 {
-		t.Fail()
-	}
+func Test_WritetoCSV_MultipleLines(t *testing.T) {
+	WritetoCSV_MultipleLines(1, t)
+	WritetoCSV_MultipleLines(3, t)
 }
 
 //	Tests between 20 to 40 times
