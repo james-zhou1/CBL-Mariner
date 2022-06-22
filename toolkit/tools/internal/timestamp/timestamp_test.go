@@ -35,7 +35,7 @@ func WritetoCSV_range_sleeps(seconds time.Duration) {
 }
 
 func Test_WritetoCSV_range_instant(t *testing.T) {
-	TrackToCSV(time.Now(), "test tool", "test step", true)
+	WritetoCSV_range_sleeps(0)
 }
 
 func Test_WritetoCSV_noRange_instant(t *testing.T) {
@@ -43,8 +43,7 @@ func Test_WritetoCSV_noRange_instant(t *testing.T) {
 }
 
 func Test_WritetoCSV_range_sleeps(t *testing.T) {
-	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-	time.Sleep(3 * time.Second)
+	WritetoCSV_range_sleeps(3)
 }
 
 func NumberOfLines() int {
