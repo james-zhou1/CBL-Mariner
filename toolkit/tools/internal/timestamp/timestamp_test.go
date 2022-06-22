@@ -5,8 +5,6 @@ package timestamp
 
 import (
 	"bufio"
-	"fmt"
-	"math/rand"
 	"os"
 	"regexp"
 	"strings"
@@ -65,21 +63,6 @@ func WritetoCSV_MultipleLines(count int, t *testing.T) {
 func Test_WritetoCSV_MultipleLines(t *testing.T) {
 	WritetoCSV_MultipleLines(1, t)
 	WritetoCSV_MultipleLines(3, t)
-}
-
-//	Tests between 20 to 40 times
-func Test_WritetoCSV_nTimes(t *testing.T) {
-	rand.Seed(time.Now().UnixNano())
-	numTests := rand.Intn(21) + 20
-	oldLines := NumberOfLines()
-	for i := 0; i < numTests; i++ {
-		TrackToCSV(time.Now(), "test tool", "test step", true)
-	}
-	newLines := NumberOfLines() - oldLines
-	fmt.Println("Number of new lines:", newLines)
-	if newLines != numTests {
-		t.Fail()
-	}
 }
 
 func GetLatestTimestamp() string {
