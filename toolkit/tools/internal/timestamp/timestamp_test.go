@@ -22,11 +22,6 @@ func Test_WritetoFile_noRange_instant(t *testing.T) {
 	TrackToFile(time.Now(), "test tool", "test step", false, os.Stdout)
 }
 
-func Test_WritetoFile_range_sleeps(t *testing.T) {
-	defer TrackToFile(time.Now(), "tool 1", "step 1", true, os.Stdout)
-	time.Sleep(3 * time.Second)
-}
-
 func WritetoCSV(seconds time.Duration) {
 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
 	time.Sleep(seconds * time.Second)
@@ -35,7 +30,6 @@ func WritetoCSV(seconds time.Duration) {
 func Test_WritetoCSV_Delay(t *testing.T) {
 	WritetoCSV(0)
 	WritetoCSV(1)
-	WritetoCSV(3)
 }
 
 func NumberOfLines() int {
@@ -90,7 +84,7 @@ func Test_WritetoCSV_timingTest(t *testing.T) {
 }
 
 func Test_WritetoCSV_formatTest(t *testing.T) {
-	WritetoCSV(3)
+	WritetoCSV(0)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	exp := [7]string{
