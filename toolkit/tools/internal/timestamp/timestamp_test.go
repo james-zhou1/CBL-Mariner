@@ -56,7 +56,6 @@ func WritetoCSV_MultipleLines(count int, t *testing.T) {
 //	Run debug test to see print output in debug console.
 func Test_WritetoCSV_MultipleLines(t *testing.T) {
 	WritetoCSV_MultipleLines(1, t)
-	WritetoCSV_MultipleLines(3, t)
 }
 
 func GetLatestTimestamp() string {
@@ -73,14 +72,14 @@ func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
 	WritetoCSV(time)
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
-	match, err := regexp.MatchString("3.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
+	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
 	if !match || err != nil {
 		t.Fail()
 	}
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
-	WritetoCSV_timingTest(3, t)
+	WritetoCSV_timingTest(1, t)
 }
 
 func Test_WritetoCSV_formatTest(t *testing.T) {
