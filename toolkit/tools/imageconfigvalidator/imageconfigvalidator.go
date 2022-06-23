@@ -33,6 +33,7 @@ var (
 
 func main() {
 	defer timestamp.TrackToFile(time.Now(), "Image config validator", "1", true, os.Stdout)
+	defer timestamp.TrackToCSV(time.Now(), "Image config validator", "1", true)
 	const returnCodeOnError = 1
 
 	app.Version(exe.ToolkitVersion)

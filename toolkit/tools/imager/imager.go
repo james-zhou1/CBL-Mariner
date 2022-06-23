@@ -59,6 +59,7 @@ const (
 
 func main() {
 	defer timestamp.TrackToFile(time.Now(), "Imager", "1", true, os.Stdout)
+	defer timestamp.TrackToCSV(time.Now(), "Imager", "1", true)
 	const defaultSystemConfig = 0
 
 	app.Version(exe.ToolkitVersion)

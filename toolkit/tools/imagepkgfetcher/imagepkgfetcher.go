@@ -52,6 +52,7 @@ var (
 
 func main() {
 	defer timestamp.TrackToFile(time.Now(), "Image package fetcher", "1", true, os.Stdout)
+	defer timestamp.TrackToCSV(time.Now(), "Image package fetcher", "1", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
