@@ -19,6 +19,12 @@ chroot_builder_folder=$chroot_base/$chroot_name
 chroot_archive=$chroot_base/$chroot_name.tar.gz
 chroot_log="$log_path"/$chroot_name.log
 
+# echo "toolkit/tools/bldtracker/bldtracker.go" \
+#     --scriptName = "create_worker_chroot.sh" \
+#     --stepName = "test step" \
+#     --filePath = "test.csv"
+#     --mode = "n"
+
 install_one_toolchain_rpm () {
     error_msg_tail="Inspect $chroot_log for more info. Did you hydrate the toolchain?"
 
@@ -100,3 +106,9 @@ else
     tar -I gzip -cvf "$chroot_archive" -C "$chroot_base/$chroot_name" . >> "$chroot_log"
 fi
 echo "Done creating $chroot_archive." | tee -a "$chroot_log"
+
+# echo "toolkit/tools/bldtracker/bldtracker.go" \
+#     --scriptName = "create_worker_chroot.sh" \
+#     --stepName = "test step" \
+#     --filePath = "test.csv"
+#     --mode = "r"
