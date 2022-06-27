@@ -8,35 +8,65 @@ import (
 	"time"
 )
 
-type timeInfo struct {
-	toolName  string // Name of the tool
-	stepName  string // Name of the step
-	duration  string // Time to complete the step (ms)
-	start     string // Start time of the step
-	end       string // End time for the step
-	timeRange bool   // Whether to record start and end time
+type TimeInfo struct {
+	filePath	string		// Path to store all timestamps. 
+	toolName  	string		// Name of the tool (consistent for all timestamps related to this object)
+	stepName  	string		// Name of the step
+	actionName	string		// Subaction within current step
+	duration  	time.Duration	// Time to complete the step (ms)
+	startTime	time.Time		// Start time of the step
+	endTime		time.Time		// End time for the step
+	timeRange 	bool		// Whether to record start and end time
+	// currentProgress	int	// Proportion of the current task
+	// maxProgress		int	// Maximum progress for parent level
 }
 
-// var (
-// 	data = []timeInfo{}
-// )
+// Create a new instance of timeInfo struct.
+func New(toolName string, timeRange bool) *TimeInfo {
+	return &TimeInfo{
+		toolName: toolName,
+		timeRange: timeRange,
+		startTime: time.Now(),
+	}
+}
 
-// Call at the begining of the main() of a tool using "defer timestamp(time.Now(), "name_of_function")".
-// The tool needs to import "time" too.
-func track(start time.Time, toolName string, stepName string, timeRange bool) timeInfo {
-	end := time.Now()
-	diff := end.Sub(start)
-	result := timeInfo{toolName, stepName, diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
-	return result
+// Creates the file that every preceding log in this go program will write to. 
+// Is this function necessary...?
+func (info *TimeInfo) InitCSV(filePath string) {
+	file, err := os.Create(filePath + ".csv")
+	if err != nil {
+		panic(err)
+	}
+	info.filePath = filePath + ".csv"
+	file.Close()
+}
+
+/* 
+ * Another possible option is to imput the step names at both .start() and .record().
+ * If the two don't match, then wipe out the time recorded in timeInfo.startTime and 
+ * only record the finish time of the task.
+ */
+// Start recording time for a new operation. 
+func (info *TimeInfo) Start() {
+	info.startTime = time.Now()
+}
+
+func (info *TimeInfo) track() {
+	info.endTime = time.Now()
+	info.duration = info.endTime.Sub(info.startTime)
+	// result := timeInfo{toolName, stepName, "", diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
 }
 
 // output as a string
 // make a class output io.Writer
-func TrackToFile(start time.Time, toolName string, stepName string, timeRange bool, writer io.Writer) {
-	curr := track(start, toolName, stepName, timeRange)
-	msg := "Step " + stepName + " in " + toolName + " took " + curr.duration + ". "
-	if timeRange {
-		msg += "Started at " + curr.start + "; ended at " + curr.end + ". \n"
+func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io.Writer) {
+	// curr := track(start, toolName, stepName, timeRange)
+	info.track()
+	info.stepName = stepName
+	info.actionName = actionName
+	msg := info.stepName + " " + info.actionName + " in " + info.toolName + " took " + info.duration.String() + ". "
+	if info.timeRange {
+		msg += "Started at " + info.startTime.Format(time.RFC1123) + "; ended at " + info.endTime.Format(time.RFC1123) + ". \n"
 	} else {
 		msg += "\n"
 	}
@@ -45,14 +75,16 @@ func TrackToFile(start time.Time, toolName string, stepName string, timeRange bo
 		panic(err)
 	}
 
+	// In case .start() is not called 
+	info.startTime = info.endTime
 }
 
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
-func TrackToCSV(start time.Time, toolName string, stepName string, timeRange bool) {
-	// Create a new .csv file.
-	file, err := os.OpenFile("build-time.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644) // not sure what 0644 means but it works
+func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
+	// Create a new .csv file. Should I add os.O_CREATE tag here? 
+	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0644) // not sure what 0644 means but it works
 	if err != nil {
-		fmt.Printf("Failed to create the csv file. %s\n", err)
+		fmt.Printf("Failed to open the csv file. %s\n", err)
 		return
 	}
 	defer file.Close()
@@ -62,15 +94,22 @@ func TrackToCSV(start time.Time, toolName string, stepName string, timeRange boo
 	defer writer.Flush()
 
 	// Run
-	curr := track(start, toolName, stepName, timeRange)
-	if timeRange {
-		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration, curr.start, curr.end})
+	// curr := track(start, toolName, stepName, timeRange)
+	info.track()
+	info.stepName = stepName
+	info.actionName = actionName
+	if info.timeRange {
+		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(), 
+			info.startTime.Format(time.RFC1123), info.endTime.Format(time.RFC1123)})
 	} else {
-		err = writer.Write([]string{curr.toolName, curr.stepName, curr.duration})
+		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	}
 	if err != nil {
 		fmt.Printf("Fail to write to file. %s\n", err)
 	}
+
+	// In case .start() is not called 
+	info.startTime = info.endTime
 }
 
 // output sth in the trace level?
