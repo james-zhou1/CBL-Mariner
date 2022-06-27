@@ -6,6 +6,7 @@ package main
 import (
 	"os"
 	"strings"
+	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/installutils"
@@ -16,6 +17,7 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/packagerepo/repoutils"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkggraph"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/pkgjson"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -49,6 +51,8 @@ var (
 )
 
 func main() {
+	defer timestamp.TrackToFile(time.Now(), "Image package fetcher", "1", true, os.Stdout)
+	defer timestamp.TrackToCSV(time.Now(), "Image package fetcher", "1", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
