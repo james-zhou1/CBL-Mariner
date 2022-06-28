@@ -10,7 +10,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
@@ -53,11 +52,12 @@ var (
 	workers = app.Flag("workers", "Number of concurrent goroutines to convert with.").Default(defaultWorkerCount).Int()
 
 	imageTag = app.Flag("image-tag", "Tag (text) appended to the image name. Empty by default.").String()
+
+	stamp = timestamp.New("roast.go", false)
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "Roast", "1", true, os.Stdout)
-	defer timestamp.TrackToCSV(time.Now(), "Roast", "1", true)
+	stamp.InitCSV("roast_test")
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
@@ -91,13 +91,16 @@ func main() {
 		logger.Log.Panicf("Failed loading image configuration. Error: %s", err)
 	}
 
+	stamp.Start()
 	err = generateImageArtifacts(*workers, inDirPath, outDirPath, *releaseVersion, *imageTag, tmpDirPath, config)
 	if err != nil {
 		logger.Log.Panic(err)
 	}
+	stamp.RecordToCSV("generateImageArtifacts", "finishing up")
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {
+
 	const defaultSystemConfig = 0
 
 	err = os.MkdirAll(tmpDir, os.ModePerm)
@@ -122,6 +125,8 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	convertRequests := make(chan *convertRequest, numberOfArtifacts)
 	convertedResults := make(chan *convertResult, numberOfArtifacts)
+
+	stamp.RecordToCSV("generateImageArtifacts", "set up")
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
 	for i := 0; i < workers; i++ {
@@ -153,6 +158,8 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	close(convertRequests)
 
+	stamp.RecordToCSV("generateImageArtifacts", "convert requests")
+
 	failedArtifacts := []string{}
 	for i := 0; i < numberOfArtifacts; i++ {
 		result := <-convertedResults
@@ -166,6 +173,8 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 	if len(failedArtifacts) != 0 {
 		err = fmt.Errorf("failed to generate the following artifacts: %v", failedArtifacts)
 	}
+
+	
 
 	return
 }

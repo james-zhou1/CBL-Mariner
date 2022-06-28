@@ -7,7 +7,6 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/boilerplate/hello"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
@@ -22,14 +21,19 @@ var (
 
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
+
+	stamp = timestamp.New("boilerplate", false)
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "BoilerPlate", "1", true, os.Stdout)
+	stamp.InitCSV("boilerplate_test")
+
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	logger.InitBestEffort(*logFile, *logLevel)
 
 	logger.Log.Info(hello.World())
+	
+	stamp.RecordToCSV("test step", "test action")
 }
