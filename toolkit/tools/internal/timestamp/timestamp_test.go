@@ -4,12 +4,15 @@
 package timestamp
 
 import (
+	"bufio"
 	"os"
 
 	// "regexp"
 	// "strings"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -86,14 +89,25 @@ func Test_roast(t *testing.T) {
 	info1.RecordToCSV("step", "action")
 }
 
-// func WritetoCSV(seconds time.Duration) {
-// 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-// 	time.Sleep(seconds * time.Second)
+func writetoCSV(info *TimeInfo, seconds time.Duration) {
+	// defer TrackToCSV(time.Now(), "test tool", "test step", true)
+	info.RecordToCSV("test tool", "test step")
+	time.Sleep(seconds * time.Millisecond)
+}
+
+// func NumberOfLines() int {
+// 	file, _ := os.Open("build-time.csv")
+// 	fileScanner := bufio.NewScanner(file)
+// 	lineCount := 0
+// 	for fileScanner.Scan() {
+// 		lineCount++
+// 	}
+// 	return lineCount
 // }
 
 // func Test_WritetoCSV_Delay(t *testing.T) {
-// 	WritetoCSV(0)
-// 	WritetoCSV(1)
+// 	writetoCSV(0)
+// 	writetoCSV(1)
 // }
 
 // func NumberOfLines() int {
@@ -109,12 +123,10 @@ func Test_roast(t *testing.T) {
 // func WritetoCSV_MultipleLines(count int, t *testing.T) {
 // 	oldLines := NumberOfLines()
 // 	for i := 0; i < count; i++ {
-// 		WritetoCSV(0)
+// 		writetoCSV(0)
 // 	}
 // 	newLines := NumberOfLines() - oldLines
-// 	if newLines != count {
-// 		t.Fail()
-// 	}
+// 	assert.Equal(newLines, count)
 // }
 
 // //	Run debug test to see print output in debug console.
@@ -123,13 +135,12 @@ func Test_roast(t *testing.T) {
 // }
 
 // func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
-// 	WritetoCSV(time)
+// 	writetoCSV(time)
 // 	latestTimestamp := GetLatestTimestamp()
 // 	data := strings.Split(latestTimestamp, ",")
 // 	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
-// 	if !match || err != nil {
-// 		t.Fail()
-// 	}
+// 	assert.NoError(err)
+// 	assert.True(match)
 // }
 
 // func Test_WritetoCSV_timingTest(t *testing.T) {
@@ -137,7 +148,7 @@ func Test_roast(t *testing.T) {
 // }
 
 // func Test_WritetoCSV_formatTest(t *testing.T) {
-// 	WritetoCSV(0)
+// 	writetoCSV(0)
 // 	latestTimestamp := GetLatestTimestamp()
 // 	data := strings.Split(latestTimestamp, ",")
 // 	exp := [7]string{
@@ -151,8 +162,7 @@ func Test_roast(t *testing.T) {
 // 	}
 // 	for i := 0; i < 7; i++ {
 // 		match, err := regexp.MatchString(exp[i], data[i])
-// 		if !match || err != nil {
-// 			t.Fail()
-// 		}
+// 		assert.NoError(err)
+// 		assert.True(match)
 // 	}
 // }

@@ -15,7 +15,6 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/installutils"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
-	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -33,12 +32,9 @@ var (
 )
 
 func main() {
-	// defer timestamp.TrackToFile(time.Now(), "Image config validator", "1", true, os.Stdout)
-	// defer timestamp.TrackToCSV(time.Now(), "Image config validator", "1", true)
-	stamp.InitCSV("imageconfigvalidator")
-
 	const returnCodeOnError = 1
 
+	stamp.InitCSV("imageconfigvalidator")
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
