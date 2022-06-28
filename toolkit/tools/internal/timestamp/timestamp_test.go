@@ -4,14 +4,9 @@
 package timestamp
 
 import (
-	"bufio"
 	"os"
-	"regexp"
-	"strings"
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -101,69 +96,72 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 	}
 // 	return lineCount
 // }
-func WritetoCSV(seconds time.Duration) {
-	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-	time.Sleep(seconds * time.Second)
-}
 
-func Test_WritetoCSV_Delay(t *testing.T) {
-	WritetoCSV(0)
-	WritetoCSV(1)
-}
+// TODO: Adapt below to new timestamp tool.
 
-func NumberOfLines() int {
-	file, _ := os.Open("build-time.csv")
-	fileScanner := bufio.NewScanner(file)
-	lineCount := 0
-	for fileScanner.Scan() {
-		lineCount++
-	}
-	return lineCount
-}
+// func WritetoCSV(seconds time.Duration) {
+// 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
+// 	time.Sleep(seconds * time.Second)
+// }
 
-func WritetoCSV_MultipleLines(count int, t *testing.T) {
-	oldLines := NumberOfLines()
-	for i := 0; i < count; i++ {
-		WritetoCSV(0)
-	}
-	newLines := NumberOfLines() - oldLines
-	assert.Equal(newLines, count)
-}
+// func Test_WritetoCSV_Delay(t *testing.T) {
+// 	WritetoCSV(0)
+// 	WritetoCSV(1)
+// }
 
-//	Run debug test to see print output in debug console.
-func Test_WritetoCSV_MultipleLines(t *testing.T) {
-	WritetoCSV_MultipleLines(1, t)
-}
+// func NumberOfLines() int {
+// 	file, _ := os.Open("build-time.csv")
+// 	fileScanner := bufio.NewScanner(file)
+// 	lineCount := 0
+// 	for fileScanner.Scan() {
+// 		lineCount++
+// 	}
+// 	return lineCount
+// }
 
-func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
-	WritetoCSV(time)
-	latestTimestamp := GetLatestTimestamp()
-	data := strings.Split(latestTimestamp, ",")
-	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
-	assert.NoError(err)
-	assert.True(match)
-}
+// func WritetoCSV_MultipleLines(count int, t *testing.T) {
+// 	oldLines := NumberOfLines()
+// 	for i := 0; i < count; i++ {
+// 		WritetoCSV(0)
+// 	}
+// 	newLines := NumberOfLines() - oldLines
+// 	assert.Equal(newLines, count)
+// }
 
-func Test_WritetoCSV_timingTest(t *testing.T) {
-	WritetoCSV_timingTest(1, t)
-}
+// //	Run debug test to see print output in debug console.
+// func Test_WritetoCSV_MultipleLines(t *testing.T) {
+// 	WritetoCSV_MultipleLines(1, t)
+// }
 
-func Test_WritetoCSV_formatTest(t *testing.T) {
-	WritetoCSV(0)
-	latestTimestamp := GetLatestTimestamp()
-	data := strings.Split(latestTimestamp, ",")
-	exp := [7]string{
-		".+",
-		".+",
-		"[0-9]+[.][0-9]+[(µs)(s)]",
-		"[A-Za-z]{3}",
-		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
-		"[A-Za-z]{3}",
-		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
-	}
-	for i := 0; i < 7; i++ {
-		match, err := regexp.MatchString(exp[i], data[i])
-		assert.NoError(err)
-		assert.True(match)
-	}
-}
+// func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
+// 	WritetoCSV(time)
+// 	latestTimestamp := GetLatestTimestamp()
+// 	data := strings.Split(latestTimestamp, ",")
+// 	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
+// 	assert.NoError(err)
+// 	assert.True(match)
+// }
+
+// func Test_WritetoCSV_timingTest(t *testing.T) {
+// 	WritetoCSV_timingTest(1, t)
+// }
+
+// func Test_WritetoCSV_formatTest(t *testing.T) {
+// 	WritetoCSV(0)
+// 	latestTimestamp := GetLatestTimestamp()
+// 	data := strings.Split(latestTimestamp, ",")
+// 	exp := [7]string{
+// 		".+",
+// 		".+",
+// 		"[0-9]+[.][0-9]+[(µs)(s)]",
+// 		"[A-Za-z]{3}",
+// 		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
+// 		"[A-Za-z]{3}",
+// 		"[0-9]{2}\\s[A-Za-z]{3}\\s[0-9]{4}\\s[0-9]{2}[:][0-9]{2}[:][0-9]{2}\\s[A-Z]{3}",
+// 	}
+// 	for i := 0; i < 7; i++ {
+// 		match, err := regexp.MatchString(exp[i], data[i])
+// 		assert.NoError(err)
+// 		assert.True(match)
+// 	}
+// }
