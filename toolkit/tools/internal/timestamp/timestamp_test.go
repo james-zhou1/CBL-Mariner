@@ -4,15 +4,14 @@
 package timestamp
 
 import (
-<<<<<<< HEAD
-=======
 	"bufio"
->>>>>>> d345e2146db59b1f98fd78e9a364e5f556497b4a
 	"os"
 	"regexp"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -128,9 +127,7 @@ func WritetoCSV_MultipleLines(count int, t *testing.T) {
 		WritetoCSV(0)
 	}
 	newLines := NumberOfLines() - oldLines
-	if newLines != count { // TODO: Change to assert.True, or assert.False, or assert.Error, or assert.NoError
-		t.Fail()
-	}
+	assert.Equal(newLines, count)
 }
 
 //	Run debug test to see print output in debug console.
@@ -143,9 +140,8 @@ func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
 	latestTimestamp := GetLatestTimestamp()
 	data := strings.Split(latestTimestamp, ",")
 	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
-	if !match || err != nil {                                // TODO: Change to assertTrue
-		t.Fail()
-	}
+	assert.NoError(err)
+	assert.True(match)
 }
 
 func Test_WritetoCSV_timingTest(t *testing.T) {
@@ -167,8 +163,7 @@ func Test_WritetoCSV_formatTest(t *testing.T) {
 	}
 	for i := 0; i < 7; i++ {
 		match, err := regexp.MatchString(exp[i], data[i])
-		if !match || err != nil { // TODO: Change to assertTrue, assert no error for err
-			t.Fail()
-		}
+		assert.NoError(err)
+		assert.True(match)
 	}
 }
