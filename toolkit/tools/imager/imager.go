@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/diskutils"
@@ -18,7 +17,6 @@ import (
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/file"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/safechroot"
-	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -58,8 +56,6 @@ const (
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "Imager", "1", true, os.Stdout)
-	defer timestamp.TrackToCSV(time.Now(), "Imager", "1", true)
 	const defaultSystemConfig = 0
 
 	app.Version(exe.ToolkitVersion)
