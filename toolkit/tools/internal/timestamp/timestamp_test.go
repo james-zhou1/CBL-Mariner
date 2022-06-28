@@ -5,6 +5,9 @@ package timestamp
 
 import (
 	"os"
+
+	// "regexp"
+	// "strings"
 	"testing"
 	"time"
 )
@@ -23,81 +26,65 @@ func Test_WritetoFile_range_instant(t *testing.T) {
 
 func Test_WritetoFile_noRange_instant(t *testing.T) {
 	info2.Start()
-	time.Sleep(3 * time.Second)
+	time.Sleep(30 * time.Millisecond)
 	info2.RecordToFile("test step", "test action", os.Stdout)
 }
 
 func Test_WritetoCSV_range(t *testing.T) {
 	info1.InitCSV("build-time")
 	info1.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info1.RecordToCSV("step 1", "action 1")
 	info1.Start()
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info1.RecordToCSV("step 2", "action 1")
 	info1.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info1.RecordToCSV("step 2", "action 2")
 	info1.Start()
-	time.Sleep(3 * time.Second)
+	time.Sleep(30 * time.Millisecond)
 	info1.RecordToCSV("step 3", "action 1")
 }
 
 func Test_WritetoCSV_noRange(t *testing.T) {
 	info2.InitCSV("build-time")
-	time.Sleep(1 * time.Second) // extra sleep
+	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info2.RecordToCSV("step 1", "action 1")
 	info2.Start()
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info2.RecordToCSV("step 2", "action 1")
-	time.Sleep(1 * time.Second) // extra sleep
+	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info2.RecordToCSV("step 2", "action 2")
 	info2.Start()
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info2.RecordToCSV("step 3", "action 1")
 }
 
 func Test_WritetoFile_noRange(t *testing.T) {
 	info2.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info2.RecordToFile("step 1", "action 1", os.Stdout)
 	info2.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info2.RecordToFile("step 2", "action 1", os.Stdout)
-	time.Sleep(2 * time.Second)
+	time.Sleep(20 * time.Millisecond)
 	info2.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info2.RecordToFile("step 2", "action 2", os.Stdout)
 	info2.Start()
-	time.Sleep(1 * time.Second)
+	time.Sleep(10 * time.Millisecond)
 	info2.RecordToFile("step 3", "action 1", os.Stdout)
 }
 
-// func Test_WritetoFile_range_sleeps(t *testing.T) {
-// 	defer TrackToFile(time.Now(), "tool 1", "step 1", true, os.Stdout)
-// 	time.Sleep(3 * time.Second)
-// }
-
-// func Test_WritetoCSV_range_sleeps(t *testing.T) {
-// 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-// 	time.Sleep(3 * time.Second)
-// }
-
-// func NumberOfLines() int {
-// 	file, _ := os.Open("build-time.csv")
-// 	fileScanner := bufio.NewScanner(file)
-// 	lineCount := 0
-// 	for fileScanner.Scan() {
-// 		lineCount++
-// 	}
-// 	return lineCount
-// }
-
-// TODO: Adapt below to new timestamp tool.
+func Test_roast(t *testing.T) {
+	// info1.InitCSV("toolkit/tools/internal/timestamp/results/roast_test")
+	info1.InitCSV("roast_test")
+	info1.RecordToCSV("step", "action")
+}
 
 // func WritetoCSV(seconds time.Duration) {
 // 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
@@ -125,7 +112,9 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 		WritetoCSV(0)
 // 	}
 // 	newLines := NumberOfLines() - oldLines
-// 	assert.Equal(newLines, count)
+// 	if newLines != count {
+// 		t.Fail()
+// 	}
 // }
 
 // //	Run debug test to see print output in debug console.
@@ -138,8 +127,9 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 	latestTimestamp := GetLatestTimestamp()
 // 	data := strings.Split(latestTimestamp, ",")
 // 	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
-// 	assert.NoError(err)
-// 	assert.True(match)
+// 	if !match || err != nil {
+// 		t.Fail()
+// 	}
 // }
 
 // func Test_WritetoCSV_timingTest(t *testing.T) {
@@ -161,7 +151,8 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 	}
 // 	for i := 0; i < 7; i++ {
 // 		match, err := regexp.MatchString(exp[i], data[i])
-// 		assert.NoError(err)
-// 		assert.True(match)
+// 		if !match || err != nil {
+// 			t.Fail()
+// 		}
 // 	}
 // }

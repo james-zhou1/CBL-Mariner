@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"time"
 )
 
 type TimeInfo struct {
-	filePath	string		// Path to store all timestamps. 
-	toolName  	string		// Name of the tool (consistent for all timestamps related to this object)
-	stepName  	string		// Name of the step
-	actionName	string		// Subaction within current step
-	duration  	time.Duration	// Time to complete the step (ms)
-	startTime	time.Time		// Start time of the step
-	endTime		time.Time		// End time for the step
-	timeRange 	bool		// Whether to record start and end time
+	filePath   string        // Path to store all timestamps.
+	toolName   string        // Name of the tool (consistent for all timestamps related to this object)
+	stepName   string        // Name of the step
+	actionName string        // Subaction within current step
+	duration   time.Duration // Time to complete the step (ms)
+	startTime  time.Time     // Start time of the step
+	endTime    time.Time     // End time for the step
+	timeRange  bool          // Whether to record start and end time
 	// currentProgress	int	// Proportion of the current task
 	// maxProgress		int	// Maximum progress for parent level
 }
@@ -24,29 +25,46 @@ type TimeInfo struct {
 // Create a new instance of timeInfo struct.
 func New(toolName string, timeRange bool) *TimeInfo {
 	return &TimeInfo{
-		toolName: toolName,
+		toolName:  toolName,
 		timeRange: timeRange,
 		startTime: time.Now(),
 	}
 }
 
-// Creates the file that every preceding log in this go program will write to. 
+// Creates the file that every preceding log in this go program will write to.
 // Is this function necessary...?
 func (info *TimeInfo) InitCSV(filePath string) {
-	file, err := os.Create(filePath + ".csv")
+	// Path subject to change later (to build folder?).
+	completePath := "tools/internal/timestamp/results/" + filePath + ".csv" // this line is the actual completePath
+	// completePath := filePath + ".csv" // this line is tor testing only
+	// Create file.
+	err := os.MkdirAll(filepath.Dir(completePath), 0644)
 	if err != nil {
 		panic(err)
 	}
-	info.filePath = filePath + ".csv"
+	file, err := os.Create(completePath)
+	if err != nil {
+		panic(err)
+	}
+
+	// Store file path information.
+	info.filePath = completePath
 	file.Close()
+
+	// file, err := os.OpenFile(filePath + ".csv", os.O_CREATE | os.O_RDWR, 0644) // not sure what 0644 means but it works
+	// if err != nil {
+	// 	fmt.Printf("Failed to open the csv file. %s\n", err)
+	// 	return
+	// }
+	// file.Close()
 }
 
-/* 
+/*
  * Another possible option is to imput the step names at both .start() and .record().
- * If the two don't match, then wipe out the time recorded in timeInfo.startTime and 
+ * If the two don't match, then wipe out the time recorded in timeInfo.startTime and
  * only record the finish time of the task.
  */
-// Start recording time for a new operation. 
+// Start recording time for a new operation.
 func (info *TimeInfo) Start() {
 	info.startTime = time.Now()
 }
@@ -75,13 +93,13 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 		panic(err)
 	}
 
-	// In case .start() is not called 
+	// In case .start() is not called
 	info.startTime = info.endTime
 }
 
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
-	// Create a new .csv file. Should I add os.O_CREATE tag here? 
+	// Create a new .csv file. Should I add os.O_CREATE tag here?
 	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0644) // not sure what 0644 means but it works
 	if err != nil {
 		fmt.Printf("Failed to open the csv file. %s\n", err)
@@ -99,7 +117,7 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	info.stepName = stepName
 	info.actionName = actionName
 	if info.timeRange {
-		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(), 
+		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
 			info.startTime.Format(time.RFC1123), info.endTime.Format(time.RFC1123)})
 	} else {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
@@ -108,7 +126,7 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 		fmt.Printf("Fail to write to file. %s\n", err)
 	}
 
-	// In case .start() is not called 
+	// In case .start() is not called
 	info.startTime = info.endTime
 }
 

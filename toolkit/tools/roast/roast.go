@@ -53,11 +53,11 @@ var (
 
 	imageTag = app.Flag("image-tag", "Tag (text) appended to the image name. Empty by default.").String()
 
-	stamp = timestamp.New("roast.go", false)
+	stamp = timestamp.New("roast.go", true)
 )
 
 func main() {
-	stamp.InitCSV("roast_test")
+	stamp.InitCSV("roast")
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
