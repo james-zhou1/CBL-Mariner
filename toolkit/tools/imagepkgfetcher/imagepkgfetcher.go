@@ -6,7 +6,6 @@ package main
 import (
 	"os"
 	"strings"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/installutils"
@@ -48,11 +47,14 @@ var (
 
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
+
+	stamp = timestamp.New("imagepkgfetcher.go", true)
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "Image package fetcher", "1", true, os.Stdout)
-	defer timestamp.TrackToCSV(time.Now(), "Image package fetcher", "1", true)
+	// defer timestamp.TrackToFile(time.Now(), "Image package fetcher", "1", true, os.Stdout)
+	// defer timestamp.TrackToCSV(time.Now(), "Image package fetcher", "1", true)
+	stamp.InitCSV("imagepkgfetcher")
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
@@ -67,6 +69,8 @@ func main() {
 		logger.Log.Panicf("Failed to initialize RPM repo cloner. Error: %s", err)
 	}
 	defer cloner.Close()
+
+	stamp.RecordToCSV("Initialize cloner", "")
 
 	if !*disableUpstreamRepos {
 		tlsKey, tlsCert := strings.TrimSpace(*tlsClientKey), strings.TrimSpace(*tlsClientCert)
@@ -93,10 +97,15 @@ func main() {
 		logger.Log.Panicf("Failed to convert downloaded RPMs into a repo. Error: %s", err)
 	}
 
+	stamp.RecordToCSV("Convert pkg to repo", "")
+
 	if strings.TrimSpace(*outputSummaryFile) != "" {
 		err = repoutils.SaveClonedRepoContents(cloner, *outputSummaryFile)
 		logger.PanicOnError(err, "Failed to save cloned repo contents")
 	}
+
+	stamp.RecordToCSV("finishing up", "")
+
 }
 
 func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath string, externalOnly bool, inputGraph string) (err error) {

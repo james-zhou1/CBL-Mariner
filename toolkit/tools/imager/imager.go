@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/diskutils"
@@ -37,6 +36,7 @@ var (
 	emitProgress    = app.Flag("emit-progress", "Write progress updates to stdout, such as percent complete and current action.").Bool()
 	logFile         = exe.LogFileFlag(app)
 	logLevel        = exe.LogLevelFlag(app)
+	stamp           = timestamp.New("imager.go", true)
 )
 
 const (
@@ -58,8 +58,10 @@ const (
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "Imager", "1", true, os.Stdout)
-	defer timestamp.TrackToCSV(time.Now(), "Imager", "1", true)
+	// defer timestamp.TrackToFile(time.Now(), "Imager", "1", true, os.Stdout)
+	// defer timestamp.TrackToCSV(time.Now(), "Imager", "1", true)
+
+	stamp.InitCSV("imager")
 	const defaultSystemConfig = 0
 
 	app.Version(exe.ToolkitVersion)
@@ -95,7 +97,12 @@ func main() {
 		}
 	}
 
+	stamp.RecordToCSV("Setting up", "")
+
 	err = buildSystemConfig(systemConfig, config.Disks, *outputDir, *buildDir)
+
+	stamp.RecordToCSV("buildSystemConfig", "")
+
 	logger.PanicOnError(err, "Failed to build system configuration")
 
 }

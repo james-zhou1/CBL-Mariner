@@ -10,7 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/configuration"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/imagegen/installutils"
@@ -29,11 +28,15 @@ var (
 
 	input       = exe.InputStringFlag(app, "Path to the image config file.")
 	baseDirPath = exe.InputDirFlag(app, "Base directory for relative file paths from the config.")
+
+	stamp = timestamp.New("imageconfigvalidator.go", true)
 )
 
 func main() {
-	defer timestamp.TrackToFile(time.Now(), "Image config validator", "1", true, os.Stdout)
-	defer timestamp.TrackToCSV(time.Now(), "Image config validator", "1", true)
+	// defer timestamp.TrackToFile(time.Now(), "Image config validator", "1", true, os.Stdout)
+	// defer timestamp.TrackToCSV(time.Now(), "Image config validator", "1", true)
+	stamp.InitCSV("imageconfigvalidator")
+
 	const returnCodeOnError = 1
 
 	app.Version(exe.ToolkitVersion)
@@ -82,6 +85,9 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 	// If doing a kickstart-style installation, then the image config file
 	// must not have any partitioning info because that will be provided
 	// by the preinstall script
+
+	stamp.Start()
+
 	for _, systemConfig := range config.SystemConfigs {
 		if systemConfig.IsKickStartBoot {
 			if len(config.Disks) > 0 || len(systemConfig.PartitionSettings) > 0 {
@@ -89,6 +95,8 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 			}
 		}
 	}
+
+	stamp.RecordToCSV("validateKickStartInstall", "")
 
 	return
 }
@@ -102,6 +110,9 @@ func validatePackages(config configuration.Config) (err error) {
 		dracutFipsPkgName  = "dracut-fips"
 		fipsKernelCmdLine  = "fips=1"
 	)
+
+	stamp.Start()
+
 	for _, systemConfig := range config.SystemConfigs {
 		packageList, err := installutils.PackageNamesFromSingleSystemConfig(systemConfig)
 		if err != nil {
@@ -148,5 +159,8 @@ func validatePackages(config configuration.Config) (err error) {
 			}
 		}
 	}
+
+	stamp.RecordToCSV("validatePackages", "")
+
 	return
 }
