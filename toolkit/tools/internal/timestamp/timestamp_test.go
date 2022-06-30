@@ -4,15 +4,12 @@
 package timestamp
 
 import (
-	"bufio"
 	"os"
 
 	// "regexp"
 	// "strings"
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
 )
 
 var (
