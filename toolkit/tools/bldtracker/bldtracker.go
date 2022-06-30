@@ -9,10 +9,11 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
-
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -21,7 +22,7 @@ var (
 	scriptName = app.Flag("script-name", "The name of the current tool.").Required().String()
 	stepName   = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
-	filePath   = app.Flag("file-path", "The file that stores timestamp data.").Required().String()                                    // currently must be absolute
+	filePath   = app.Flag("file-path", "The file that stores timestamp data.").Required().String()                            // currently must be absolute
 	mode       = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
 )
 
@@ -41,15 +42,21 @@ func main() {
 }
 
 func initialize() {
+	mask := syscall.Umask(0)
+	defer syscall.Umask(mask)
+	err := os.MkdirAll(filepath.Dir(*filePath), 0777)
+	if err != nil {
+		panic(err)
+	}
 	file, err := os.Create(*filePath)
-		if err != nil {
-			fmt.Printf("Unable to create file: %s", *filePath)
-		}
-		file.Close()
+	if err != nil {
+		fmt.Printf("Unable to create file: %s", *filePath)
+	}
+	file.Close()
 }
 
 func record() {
-	file, err := os.OpenFile(*filePath, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(*filePath, os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Printf("Unable to open file (may not have been created): %s", *filePath)
 	}
