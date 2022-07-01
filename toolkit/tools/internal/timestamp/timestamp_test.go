@@ -86,16 +86,17 @@ func Test_roast(t *testing.T) {
 	info1.RecordToCSV("step", "action")
 }
 
-func writetoCSV(info *TimeInfo, seconds time.Duration) {
-	// defer TrackToCSV(time.Now(), "test tool", "test step", true)
-	info.RecordToCSV("test tool", "test step")
+func WritetoCSV(info *TimeInfo, seconds time.Duration) {
+	info.Start()
 	time.Sleep(seconds * time.Millisecond)
+	info.RecordToCSV("test tool", "test step")
 }
 
-// func Test_WritetoCSV_Delay(t *testing.T) {
-// 	WritetoCSV(0)
-// 	WritetoCSV(1)
-// }
+func Test_WritetoCSV_Delay(t *testing.T) {
+	info1.InitCSV("build-time")
+	WritetoCSV(info1, 0)
+	WritetoCSV(info1, 1)
+}
 
 // func NumberOfLines() int {
 // 	file, _ := os.Open("build-time.csv")
@@ -110,7 +111,7 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 // func WritetoCSV_MultipleLines(count int, t *testing.T) {
 // 	oldLines := NumberOfLines()
 // 	for i := 0; i < count; i++ {
-// 		writetoCSV(info1, 0)
+// 		WritetoCSV(info1, 0)
 // 	}
 // 	newLines := NumberOfLines() - oldLines
 // 	assert.Equal(t, newLines, count)
