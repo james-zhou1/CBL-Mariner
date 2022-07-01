@@ -92,13 +92,6 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 	time.Sleep(seconds * time.Millisecond)
 }
 
-// TODO: Adapt below to new timestamp tool.
-
-// func WritetoCSV(seconds time.Duration) {
-// 	defer TrackToCSV(time.Now(), "test tool", "test step", true)
-// 	time.Sleep(seconds * time.Second)
-// }
-
 // func Test_WritetoCSV_Delay(t *testing.T) {
 // 	WritetoCSV(0)
 // 	WritetoCSV(1)
