@@ -92,11 +92,11 @@ func WritetoCSV(info *TimeInfo, seconds time.Duration) {
 	info.RecordToCSV("test tool", "test step")
 }
 
-func Test_WritetoCSV_Delay(t *testing.T) {
-	info1.InitCSV("build-time")
-	WritetoCSV(info1, 0)
-	WritetoCSV(info1, 1)
-}
+// func Test_WritetoCSV_Delay(t *testing.T) {
+// 	info1.InitCSV("build-time")
+// 	WritetoCSV(info1, 0)
+// 	WritetoCSV(info1, 1)
+// }
 
 // func NumberOfLines() int {
 // 	file, _ := os.Open("build-time.csv")
