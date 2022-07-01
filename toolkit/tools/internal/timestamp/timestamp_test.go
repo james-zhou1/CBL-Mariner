@@ -4,15 +4,12 @@
 package timestamp
 
 import (
-	"bufio"
 	"os"
 
 	// "regexp"
 	// "strings"
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -95,16 +92,6 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 	time.Sleep(seconds * time.Millisecond)
 }
 
-// func NumberOfLines() int {
-// 	file, _ := os.Open("build-time.csv")
-// 	fileScanner := bufio.NewScanner(file)
-// 	lineCount := 0
-// 	for fileScanner.Scan() {
-// 		lineCount++
-// 	}
-// 	return lineCount
-// }
-
 // TODO: Adapt below to new timestamp tool.
 
 // func WritetoCSV(seconds time.Duration) {
@@ -117,30 +104,30 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 // 	WritetoCSV(1)
 // }
 
-func NumberOfLines() int {
-	file, _ := os.Open("build-time.csv")
-	fileScanner := bufio.NewScanner(file)
-	lineCount := 0
-	for fileScanner.Scan() {
-		lineCount++
-	}
-	return lineCount
-}
+// func NumberOfLines() int {
+// 	file, _ := os.Open("build-time.csv")
+// 	fileScanner := bufio.NewScanner(file)
+// 	lineCount := 0
+// 	for fileScanner.Scan() {
+// 		lineCount++
+// 	}
+// 	return lineCount
+// }
 
-func WritetoCSV_MultipleLines(count int, t *testing.T) {
-	info1.InitCSV("build-time")
-	oldLines := NumberOfLines()
-	for i := 0; i < count; i++ {
-		writetoCSV(info1, 0)
-	}
-	newLines := NumberOfLines() - oldLines
-	assert.Equal(t, newLines, count)
-}
+// func WritetoCSV_MultipleLines(count int, t *testing.T) {
+// 	oldLines := NumberOfLines()
+// 	for i := 0; i < count; i++ {
+// 		writetoCSV(info1, 0)
+// 	}
+// 	newLines := NumberOfLines() - oldLines
+// 	assert.Equal(t, newLines, count)
+// }
 
-// //	Run debug test to see print output in debug console.
-func Test_WritetoCSV_MultipleLines(t *testing.T) {
-	WritetoCSV_MultipleLines(1, t)
-}
+// // //	Run debug test to see print output in debug console.
+// func Test_WritetoCSV_MultipleLines(t *testing.T) {
+// 	info1.InitCSV("build-time")
+// 	WritetoCSV_MultipleLines(1, t)
+// }
 
 // func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
 // 	WritetoCSV(time)
