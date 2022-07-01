@@ -7,8 +7,8 @@ import (
 )
 
 // Reads a CSV file, and returns data to the terminal
-func ParseAndExport() {
-	file, err := os.Open("file_data.csv")
+func ParseAndExport(filename string) {
+	file, err := os.Open(filename)
 
 	if err != nil {
 		fmt.Println("failed to open csv file")
@@ -20,5 +20,12 @@ func ParseAndExport() {
 	for fileScanner.Scan() {
 		fmt.Println((fileScanner.Text()))
 	}
+
+}
+
+func ParseCSV() {
+
+	create_worker_chroot_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/create_worker_chroot.csv"
+	ParseAndExport(create_worker_chroot_path)
 
 }
