@@ -4,15 +4,15 @@
 package timestamp
 
 import (
+	"bufio"
 	"os"
-<<<<<<< HEAD
-=======
 
 	// "regexp"
 	// "strings"
->>>>>>> 4cb0d22e1bcbd7a3862915ee174680b59cbf3bed
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -105,7 +105,6 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 // 	return lineCount
 // }
 
-<<<<<<< HEAD
 // TODO: Adapt below to new timestamp tool.
 
 // func WritetoCSV(seconds time.Duration) {
@@ -118,29 +117,30 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 // 	WritetoCSV(1)
 // }
 
-// func NumberOfLines() int {
-// 	file, _ := os.Open("build-time.csv")
-// 	fileScanner := bufio.NewScanner(file)
-// 	lineCount := 0
-// 	for fileScanner.Scan() {
-// 		lineCount++
-// 	}
-// 	return lineCount
-// }
+func NumberOfLines() int {
+	file, _ := os.Open("build-time.csv")
+	fileScanner := bufio.NewScanner(file)
+	lineCount := 0
+	for fileScanner.Scan() {
+		lineCount++
+	}
+	return lineCount
+}
 
-// func WritetoCSV_MultipleLines(count int, t *testing.T) {
-// 	oldLines := NumberOfLines()
-// 	for i := 0; i < count; i++ {
-// 		WritetoCSV(0)
-// 	}
-// 	newLines := NumberOfLines() - oldLines
-// 	assert.Equal(newLines, count)
-// }
+func WritetoCSV_MultipleLines(count int, t *testing.T) {
+	info1.InitCSV("build-time")
+	oldLines := NumberOfLines()
+	for i := 0; i < count; i++ {
+		writetoCSV(info1, 0)
+	}
+	newLines := NumberOfLines() - oldLines
+	assert.Equal(t, newLines, count)
+}
 
 // //	Run debug test to see print output in debug console.
-// func Test_WritetoCSV_MultipleLines(t *testing.T) {
-// 	WritetoCSV_MultipleLines(1, t)
-// }
+func Test_WritetoCSV_MultipleLines(t *testing.T) {
+	WritetoCSV_MultipleLines(1, t)
+}
 
 // func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
 // 	WritetoCSV(time)
@@ -157,7 +157,6 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 
 // func Test_WritetoCSV_formatTest(t *testing.T) {
 // 	WritetoCSV(0)
-=======
 // func Test_WritetoCSV_Delay(t *testing.T) {
 // 	writetoCSV(0)
 // 	writetoCSV(1)
@@ -202,7 +201,6 @@ func writetoCSV(info *TimeInfo, seconds time.Duration) {
 
 // func Test_WritetoCSV_formatTest(t *testing.T) {
 // 	writetoCSV(0)
->>>>>>> 4cb0d22e1bcbd7a3862915ee174680b59cbf3bed
 // 	latestTimestamp := GetLatestTimestamp()
 // 	data := strings.Split(latestTimestamp, ",")
 // 	exp := [7]string{

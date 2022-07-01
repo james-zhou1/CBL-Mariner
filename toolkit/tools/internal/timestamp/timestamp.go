@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"syscall"
 	"time"
 )
 
@@ -38,7 +39,9 @@ func (info *TimeInfo) InitCSV(filePath string) {
 	completePath := "tools/internal/timestamp/results/" + filePath + ".csv" // this line is the actual completePath
 	// completePath := filePath + ".csv" // this line is tor testing only
 	// Create file.
-	err := os.MkdirAll(filepath.Dir(completePath), 0644)
+	mask := syscall.Umask(0)
+	defer syscall.Umask(mask)
+	err := os.MkdirAll(filepath.Dir(completePath), 0777)
 	if err != nil {
 		panic(err)
 	}
@@ -100,7 +103,7 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 // go tool for csv files (for future parsing), tool name, step name, time, flag for time range
 func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	// Create a new .csv file. Should I add os.O_CREATE tag here?
-	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0644) // not sure what 0644 means but it works
+	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0777) // not sure what 0644 means but it works
 	if err != nil {
 		fmt.Printf("Failed to open the csv file. %s\n", err)
 		return
