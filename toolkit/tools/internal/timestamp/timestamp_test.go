@@ -94,10 +94,16 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 	info1.RecordToCSV("step", "action")
 // }
 
-// func writetoCSV(info *TimeInfo, seconds time.Duration) {
-// 	// defer TrackToCSV(time.Now(), "test tool", "test step", true)
-// 	info.RecordToCSV("test tool", "test step")
-// 	time.Sleep(seconds * time.Millisecond)
+func WritetoCSV(info *TimeInfo, seconds time.Duration) {
+	Stamp.Start()
+	time.Sleep(seconds * time.Millisecond)
+	Stamp.RecordToCSV("test tool", "test step")
+}
+
+// func Test_WritetoCSV_Delay(t *testing.T) {
+// 	info1.InitCSV("build-time")
+// 	WritetoCSV(info1, 0)
+// 	WritetoCSV(info1, 1)
 // }
 
 // func NumberOfLines() int {
@@ -110,6 +116,36 @@ func Test_WritetoFile_noRange(t *testing.T) {
 // 	return lineCount
 // }
 
+// func WritetoCSV_MultipleLines(count int, t *testing.T) {
+// 	oldLines := NumberOfLines()
+// 	for i := 0; i < count; i++ {
+// 		WritetoCSV(info1, 0)
+// 	}
+// 	newLines := NumberOfLines() - oldLines
+// 	assert.Equal(t, newLines, count)
+// }
+
+// // //	Run debug test to see print output in debug console.
+// func Test_WritetoCSV_MultipleLines(t *testing.T) {
+// 	info1.InitCSV("build-time")
+// 	WritetoCSV_MultipleLines(1, t)
+// }
+
+// func WritetoCSV_timingTest(time time.Duration, t *testing.T) {
+// 	WritetoCSV(time)
+// 	latestTimestamp := GetLatestTimestamp()
+// 	data := strings.Split(latestTimestamp, ",")
+// 	match, err := regexp.MatchString("1.[0-9]{9}s", data[2]) // TODO: Make the timing test work for non-three second intervals
+// 	assert.NoError(err)
+// 	assert.True(match)
+// }
+
+// func Test_WritetoCSV_timingTest(t *testing.T) {
+// 	WritetoCSV_timingTest(1, t)
+// }
+
+// func Test_WritetoCSV_formatTest(t *testing.T) {
+// 	WritetoCSV(0)
 // func Test_WritetoCSV_Delay(t *testing.T) {
 // 	writetoCSV(0)
 // 	writetoCSV(1)
