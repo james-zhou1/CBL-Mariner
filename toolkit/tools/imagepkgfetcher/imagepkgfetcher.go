@@ -48,13 +48,12 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
-	stamp = timestamp.New("imagepkgfetcher.go", true)
+	// stamp = timestamp.New("imagepkgfetcher.go", true)
 )
 
 func main() {
-	// defer timestamp.TrackToFile(time.Now(), "Image package fetcher", "1", true, os.Stdout)
-	// defer timestamp.TrackToCSV(time.Now(), "Image package fetcher", "1", true)
-	stamp.InitCSV("imagepkgfetcher")
+	// stamp.New("imagepkgfetcher.go", true)
+	timestamp.InitCSV("imagepkgfetcher", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
@@ -70,7 +69,7 @@ func main() {
 	}
 	defer cloner.Close()
 
-	stamp.RecordToCSV("Initialize cloner", "")
+	timestamp.Stamp.RecordToCSV("Initialize cloner", "")
 
 	if !*disableUpstreamRepos {
 		tlsKey, tlsCert := strings.TrimSpace(*tlsClientKey), strings.TrimSpace(*tlsClientCert)
@@ -97,14 +96,14 @@ func main() {
 		logger.Log.Panicf("Failed to convert downloaded RPMs into a repo. Error: %s", err)
 	}
 
-	stamp.RecordToCSV("Convert pkg to repo", "")
+	timestamp.Stamp.RecordToCSV("Convert pkg to repo", "")
 
 	if strings.TrimSpace(*outputSummaryFile) != "" {
 		err = repoutils.SaveClonedRepoContents(cloner, *outputSummaryFile)
 		logger.PanicOnError(err, "Failed to save cloned repo contents")
 	}
 
-	stamp.RecordToCSV("finishing up", "")
+	timestamp.Stamp.RecordToCSV("finishing up", "")
 
 }
 

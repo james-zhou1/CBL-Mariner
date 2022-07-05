@@ -29,7 +29,7 @@ var (
 	input       = exe.InputStringFlag(app, "Path to the image config file.")
 	baseDirPath = exe.InputDirFlag(app, "Base directory for relative file paths from the config.")
 
-	stamp = timestamp.New("imageconfigvalidator.go", true)
+	// stamp = timestamp.New("imageconfigvalidator.go", true)
 )
 
 func main() {
@@ -39,6 +39,7 @@ func main() {
 
 	const returnCodeOnError = 1
 
+	timestamp.InitCSV("imageconfigvalidator", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
@@ -86,7 +87,7 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 	// must not have any partitioning info because that will be provided
 	// by the preinstall script
 
-	stamp.Start()
+	timestamp.Stamp.Start()
 
 	for _, systemConfig := range config.SystemConfigs {
 		if systemConfig.IsKickStartBoot {
@@ -96,7 +97,7 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 		}
 	}
 
-	stamp.RecordToCSV("validateKickStartInstall", "")
+	timestamp.Stamp.RecordToCSV("validateKickStartInstall", "")
 
 	return
 }
@@ -111,7 +112,7 @@ func validatePackages(config configuration.Config) (err error) {
 		fipsKernelCmdLine  = "fips=1"
 	)
 
-	stamp.Start()
+	timestamp.Stamp.Start()
 
 	for _, systemConfig := range config.SystemConfigs {
 		packageList, err := installutils.PackageNamesFromSingleSystemConfig(systemConfig)
@@ -160,7 +161,7 @@ func validatePackages(config configuration.Config) (err error) {
 		}
 	}
 
-	stamp.RecordToCSV("validatePackages", "")
+	timestamp.Stamp.RecordToCSV("validatePackages", "")
 
 	return
 }
