@@ -40,13 +40,11 @@ func ParseCSV() {
 	ParseAndExport(imager_path)
 	ParseAndExport(roast_path)
 
-	fmt.Printf("%v\n", timeArray)
-
-	startTime, err := time.Parse(time.RFC1123, "Fri, 01 Jul 2022 17:56:44 EDT")
+	startTime, err := time.Parse(time.UnixDate, timeArray[0][4])
 	if err != nil {
 		panic(err)
 	}
-	endTime, err := time.Parse(time.RFC1123, "Fri, 01 Jul 2022 18:01:44 EDT")
+	endTime, err := time.Parse(time.UnixDate, timeArray[len(timeArray)-1][5])
 	if err != nil {
 		panic(err)
 	}
