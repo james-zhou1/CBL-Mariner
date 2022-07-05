@@ -49,5 +49,9 @@ func ParseCSV() {
 		panic(err)
 	}
 	difference := endTime.Sub(startTime)
-	fmt.Println(difference)
+	for i := 0; i < len(timeArray); i++ {
+		fmt.Println(timeArray[i][0] + " " + timeArray[i][1] + " took " + timeArray[i][3] + ". ")
+	}
+
+	fmt.Println("The full build duration was " + difference.String() + ".")
 }
