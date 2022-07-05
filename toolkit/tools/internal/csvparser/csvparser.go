@@ -26,6 +26,14 @@ func ParseAndExport(filename string) {
 func ParseCSV() {
 
 	create_worker_chroot_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/create_worker_chroot.csv"
+	image_config_validator_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imageconfigvalidator.csv"
+	image_pkg_fetcher_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imagepkgfetcher.csv"
+	imager_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imager.csv"
+	roast_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/roast.csv"
 	ParseAndExport(create_worker_chroot_path)
+	ParseAndExport(image_config_validator_path)
+	ParseAndExport(image_pkg_fetcher_path)
+	ParseAndExport(imager_path)
+	ParseAndExport(roast_path)
 
 }
