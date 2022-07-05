@@ -66,7 +66,7 @@ func record() {
 	defer writer.Flush()
 
 	// err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
-	err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.RFC1123)})
+	err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
 	if err != nil {
 		fmt.Printf("Unable to write to file: %s", *filePath)
 	}

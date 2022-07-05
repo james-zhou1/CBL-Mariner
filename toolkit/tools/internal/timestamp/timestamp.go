@@ -87,7 +87,7 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 	info.actionName = actionName
 	msg := info.stepName + " " + info.actionName + " in " + info.toolName + " took " + info.duration.String() + ". "
 	if info.timeRange {
-		msg += "Started at " + info.startTime.Format(time.RFC1123) + "; ended at " + info.endTime.Format(time.RFC1123) + ". \n"
+		msg += "Started at " + info.startTime.Format(time.UnixDate) + "; ended at " + info.endTime.Format(time.UnixDate) + ". \n"
 	} else {
 		msg += "\n"
 	}
@@ -121,7 +121,9 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	info.actionName = actionName
 	if info.timeRange {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
-			info.startTime.Format(time.RFC1123), info.endTime.Format(time.RFC1123)})
+			info.startTime.Format(time.UnixDate), info.endTime.Format(time.UnixDate)})
+		// err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
+		// 	info.startTime.Format(time.RFC1123), info.endTime.Format(time.RFC1123)})
 	} else {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	}
