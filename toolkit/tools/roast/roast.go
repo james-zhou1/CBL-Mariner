@@ -97,7 +97,6 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	stamp.RecordToCSV("generateImageArtifacts", "finishing up")
-	ParseCSV()
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {
