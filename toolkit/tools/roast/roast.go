@@ -54,11 +54,11 @@ var (
 
 	imageTag = app.Flag("image-tag", "Tag (text) appended to the image name. Empty by default.").String()
 
-	stamp = timestamp.New("roast.go", true)
+	// stamp = timestamp.New("roast.go", true)
 )
 
 func main() {
-	stamp.InitCSV("roast")
+	timestamp.InitCSV("roast", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
@@ -92,13 +92,14 @@ func main() {
 		logger.Log.Panicf("Failed loading image configuration. Error: %s", err)
 	}
 
-	stamp.Start()
+	timestamp.Stamp.Start()
 	err = generateImageArtifacts(*workers, inDirPath, outDirPath, *releaseVersion, *imageTag, tmpDirPath, config)
 	if err != nil {
 		logger.Log.Panic(err)
 	}
-	stamp.RecordToCSV("generateImageArtifacts", "finishing up")
+	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
 	csvparser.ParseCSV()
+
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {
@@ -128,7 +129,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 	convertRequests := make(chan *convertRequest, numberOfArtifacts)
 	convertedResults := make(chan *convertResult, numberOfArtifacts)
 
-	stamp.RecordToCSV("generateImageArtifacts", "set up")
+	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "set up")
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
 	for i := 0; i < workers; i++ {
@@ -160,7 +161,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	close(convertRequests)
 
-	stamp.RecordToCSV("generateImageArtifacts", "convert requests")
+	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "convert requests")
 
 	failedArtifacts := []string{}
 	for i := 0; i < numberOfArtifacts; i++ {
