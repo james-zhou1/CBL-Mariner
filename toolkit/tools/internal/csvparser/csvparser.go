@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 )
 
 // Reads a CSV file, and returns data to the terminal
@@ -36,4 +37,14 @@ func ParseCSV() {
 	ParseAndExport(imager_path)
 	ParseAndExport(roast_path)
 
+	startTime, err := time.Parse(time.RFC1123, "Fri, 01 Jul 2022 17:56:44 EDT")
+	if err != nil {
+		panic(err)
+	}
+	endTime, err := time.Parse(time.RFC1123, "Fri, 01 Jul 2022 18:01:44 EDT")
+	if err != nil {
+		panic(err)
+	}
+	difference := endTime.Sub(startTime)
+	fmt.Println(difference)
 }
