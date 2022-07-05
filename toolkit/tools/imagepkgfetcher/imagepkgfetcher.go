@@ -79,6 +79,8 @@ func main() {
 		}
 	}
 
+	timestamp.Stamp.RecordToCSV("Add network files", "")
+
 	if strings.TrimSpace(*inputSummaryFile) != "" {
 		// If an input summary file was provided, simply restore the cache using the file.
 		err = repoutils.RestoreClonedRepoContents(cloner, *inputSummaryFile)
@@ -89,6 +91,8 @@ func main() {
 	if err != nil {
 		logger.Log.Panicf("Failed to clone RPM repo. Error: %s", err)
 	}
+
+	// timestamp.Stamp.RecordToCSV("Clone RPM repo", "")
 
 	logger.Log.Info("Configuring downloaded RPMs as a local repository")
 	err = cloner.ConvertDownloadedPackagesIntoRepo()
@@ -114,7 +118,8 @@ func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath st
 	if err != nil {
 		return
 	}
-
+	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Load config with abosolute paths")
+	
 	packageVersionsInConfig, err := installutils.PackageNamesFromConfig(cfg)
 	if err != nil {
 		return
@@ -130,8 +135,12 @@ func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath st
 		}
 	}
 
+	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Add kernel packages from KernelOptions")
+
 	// Add any packages required by the install tools
 	packageVersionsInConfig = append(packageVersionsInConfig, installutils.GetRequiredPackagesForInstall()...)
+
+	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Add packages required by install tools")
 
 	logger.Log.Infof("Cloning: %v", packageVersionsInConfig)
 	// The image tools don't care if a package was created locally or not, just that it exists. Disregard if it is prebuilt or not.
