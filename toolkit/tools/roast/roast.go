@@ -97,6 +97,7 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	stamp.RecordToCSV("generateImageArtifacts", "finishing up")
+	ParseCSV()
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {
@@ -173,8 +174,6 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 	if len(failedArtifacts) != 0 {
 		err = fmt.Errorf("failed to generate the following artifacts: %v", failedArtifacts)
 	}
-
-	
 
 	return
 }
