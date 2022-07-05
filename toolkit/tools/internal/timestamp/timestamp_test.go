@@ -4,6 +4,7 @@
 package timestamp
 
 import (
+	"fmt"
 	"os"
 
 	// "regexp"
@@ -31,37 +32,44 @@ func Test_WritetoFile_noRange_instant(t *testing.T) {
 }
 
 func Test_WritetoCSV_range(t *testing.T) {
-	info1.InitCSV("build-time")
-	info1.Start()
+	InitCSVTest("build-time", true)
+	Stamp.Start()
 	time.Sleep(10 * time.Millisecond)
-	info1.RecordToCSV("step 1", "action 1")
-	info1.Start()
+	Stamp.RecordToCSV("step 1", "action 1")
+	Stamp.Start()
 	time.Sleep(20 * time.Millisecond)
-	info1.RecordToCSV("step 2", "action 1")
-	info1.Start()
+	Stamp.RecordToCSV("step 2", "action 1")
+	Stamp.Start()
 	time.Sleep(10 * time.Millisecond)
-	info1.RecordToCSV("step 2", "action 2")
-	info1.Start()
+	Stamp.RecordToCSV("step 2", "action 2")
+	Stamp.Start()
 	time.Sleep(30 * time.Millisecond)
-	info1.RecordToCSV("step 3", "action 1")
+	Stamp.RecordToCSV("step 3", "action 1")
+}
+
+func Test_getHomeDir(t * testing.T) {
+	home, _ := os.UserHomeDir()
+	fmt.Printf("%s\n", home)
+	curr, _ := os.Getwd()
+	fmt.Printf("%s\n",curr)
 }
 
 func Test_WritetoCSV_noRange(t *testing.T) {
-	info2.InitCSV("build-time")
+	InitCSVTest("build-time", false)
 	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
 	time.Sleep(20 * time.Millisecond)
-	info2.RecordToCSV("step 1", "action 1")
-	info2.Start()
+	Stamp.RecordToCSV("step 1", "action 1")
+	Stamp.Start()
 	time.Sleep(20 * time.Millisecond)
-	info2.RecordToCSV("step 2", "action 1")
+	Stamp.RecordToCSV("step 2", "action 1")
 	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
 	time.Sleep(20 * time.Millisecond)
-	info2.RecordToCSV("step 2", "action 2")
-	info2.Start()
+	Stamp.RecordToCSV("step 2", "action 2")
+	Stamp.Start()
 	time.Sleep(20 * time.Millisecond)
-	info2.RecordToCSV("step 3", "action 1")
+	Stamp.RecordToCSV("step 3", "action 1")
 }
 
 func Test_WritetoFile_noRange(t *testing.T) {
@@ -80,17 +88,17 @@ func Test_WritetoFile_noRange(t *testing.T) {
 	info2.RecordToFile("step 3", "action 1", os.Stdout)
 }
 
-func Test_roast(t *testing.T) {
-	// info1.InitCSV("toolkit/tools/internal/timestamp/results/roast_test")
-	info1.InitCSV("roast_test")
-	info1.RecordToCSV("step", "action")
-}
+// func Test_roast(t *testing.T) {
+// 	// info1.InitCSV("toolkit/tools/internal/timestamp/results/roast_test")
+// 	info1.InitCSV("roast_test")
+// 	info1.RecordToCSV("step", "action")
+// }
 
-func writetoCSV(info *TimeInfo, seconds time.Duration) {
-	// defer TrackToCSV(time.Now(), "test tool", "test step", true)
-	info.RecordToCSV("test tool", "test step")
-	time.Sleep(seconds * time.Millisecond)
-}
+// func writetoCSV(info *TimeInfo, seconds time.Duration) {
+// 	// defer TrackToCSV(time.Now(), "test tool", "test step", true)
+// 	info.RecordToCSV("test tool", "test step")
+// 	time.Sleep(seconds * time.Millisecond)
+// }
 
 // func NumberOfLines() int {
 // 	file, _ := os.Open("build-time.csv")

@@ -22,11 +22,11 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
-	stamp = timestamp.New("boilerplate", true)
+	// stamp = timestamp.New("boilerplate", true)
 )
 
 func main() {
-	stamp.InitCSV("boilerplate")
+	timestamp.InitCSV("boilerplate", true)
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
@@ -35,5 +35,5 @@ func main() {
 
 	logger.Log.Info(hello.World())
 	
-	stamp.RecordToCSV("test step", "test action")
+	timestamp.Stamp.RecordToCSV("test step", "test action")
 }

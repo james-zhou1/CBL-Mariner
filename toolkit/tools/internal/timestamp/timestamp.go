@@ -6,8 +6,11 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"syscall"
 	"time"
+)
+
+var (
+	Stamp *TimeInfo
 )
 
 type TimeInfo struct {
@@ -34,14 +37,16 @@ func New(toolName string, timeRange bool) *TimeInfo {
 
 // Creates the file that every preceding log in this go program will write to.
 // Is this function necessary...?
-func (info *TimeInfo) InitCSV(filePath string) {
+func InitCSV(toolName string, timeRange bool) {
 	// Path subject to change later (to build folder?).
-	completePath := "tools/internal/timestamp/results/" + filePath + ".csv" // this line is the actual completePath
-	// completePath := filePath + ".csv" // this line is tor testing only
-	// Create file.
-	mask := syscall.Umask(0)
-	defer syscall.Umask(mask)
-	err := os.MkdirAll(filepath.Dir(completePath), 0777)
+	completePath := "tools/internal/timestamp/results/" + toolName + ".csv" // this line is the actual completePath
+	
+	// Update the global object "Stamp".
+	Stamp = New(toolName, timeRange)
+
+	// mask := syscall.Umask(0)
+	// defer syscall.Umask(mask)
+	err := os.MkdirAll(filepath.Dir(completePath), 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +56,7 @@ func (info *TimeInfo) InitCSV(filePath string) {
 	}
 
 	// Store file path information.
-	info.filePath = completePath
+	Stamp.filePath = completePath
 	file.Close()
 
 	// file, err := os.OpenFile(filePath + ".csv", os.O_CREATE | os.O_RDWR, 0644) // not sure what 0644 means but it works
@@ -60,6 +65,20 @@ func (info *TimeInfo) InitCSV(filePath string) {
 	// 	return
 	// }
 	// file.Close()
+}
+
+// A temporary function that enables testing (from toolkit/tools/internal//timestamp) to run smoothly. 
+// Will not be used in the actual build-time tracking process.
+func InitCSVTest(toolName string, timeRange bool) {
+	path := toolName + ".csv"
+	Stamp = New(toolName, timeRange)
+	file, err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+
+	Stamp.filePath = path
+	file.Close()
 }
 
 /*
