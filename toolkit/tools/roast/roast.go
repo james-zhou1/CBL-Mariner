@@ -98,7 +98,7 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
-	csvparser.ParseCSV()
+	csvparser.OutputCSVLog(csvparser.FilepathsToArray())
 
 }
 

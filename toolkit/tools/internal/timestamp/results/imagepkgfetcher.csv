@@ -1,9 +1,9 @@
-imagepkgfetcher,Initialize cloner,,4.717236242s,Wed Jul  6 14:11:50 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Add network files,,2.163373ms,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Clone RPM repo,Load config with abosolute paths,711.392µs,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Clone RPM repo,Package names from config,145.098µs,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Clone RPM repo,Add kernel packages from KernelOptions,42.899µs,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Clone RPM repo,Add packages required by install tools,13.7µs,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:11:55 PDT 2022
-imagepkgfetcher,Clone RPM repo,Done cloning,1m2.199063249s,Wed Jul  6 14:11:55 PDT 2022,Wed Jul  6 14:12:57 PDT 2022
-imagepkgfetcher,Convert pkg to repo,,520.816563ms,Wed Jul  6 14:12:57 PDT 2022,Wed Jul  6 14:12:58 PDT 2022
-imagepkgfetcher,finishing up,,75.58461ms,Wed Jul  6 14:12:58 PDT 2022,Wed Jul  6 14:12:58 PDT 2022
+imagepkgfetcher,Initialize cloner,,4.607239737s,Wed Jul  6 14:33:42 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Add network files,,1.445288ms,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Load config with abosolute paths,575.695µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Package names from config,94.299µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Add kernel packages from KernelOptions,11.7µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Add packages required by install tools,10.9µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Done cloning,1m2.390642457s,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:34:49 PDT 2022
+imagepkgfetcher,Convert pkg to repo,,423.173774ms,Wed Jul  6 14:34:49 PDT 2022,Wed Jul  6 14:34:50 PDT 2022
+imagepkgfetcher,finishing up,,50.285982ms,Wed Jul  6 14:34:50 PDT 2022,Wed Jul  6 14:34:50 PDT 2022
