@@ -61,8 +61,8 @@ func FilepathsToArrayTest() []string {
 	return fileArray
 }
 
-// Take list of file paths and convert respective CSVs to parseable array format
-func ParseFiles(files []string) {
+// Take list of file paths, parse, and output log to terminal
+func OutputCSVLog(files []string) {
 
 	// Format each file to array format
 	for _, file := range files {
