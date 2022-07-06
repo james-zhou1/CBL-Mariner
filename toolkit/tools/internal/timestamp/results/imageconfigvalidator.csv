@@ -1,2 +1,2 @@
-imageconfigvalidator,validatePackages,,84.701µs,Wed Jul  6 12:53:32 EDT 2022,Wed Jul  6 12:53:32 EDT 2022
-imageconfigvalidator,validateKickStartInstall,,6.9µs,Wed Jul  6 12:53:32 EDT 2022,Wed Jul  6 12:53:32 EDT 2022
+imageconfigvalidator,validatePackages,,71.499µs,Wed Jul  6 14:11:50 PDT 2022,Wed Jul  6 14:11:50 PDT 2022
+imageconfigvalidator,validateKickStartInstall,,5.7µs,Wed Jul  6 14:11:50 PDT 2022,Wed Jul  6 14:11:50 PDT 2022

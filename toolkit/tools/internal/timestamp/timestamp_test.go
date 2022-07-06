@@ -32,7 +32,7 @@ func Test_WritetoFile_noRange_instant(t *testing.T) {
 }
 
 func Test_WritetoCSV_range(t *testing.T) {
-	InitCSVTest("build-time", true)
+	InitCSV("build-time", true)
 	Stamp.Start()
 	time.Sleep(10 * time.Millisecond)
 	Stamp.RecordToCSV("step 1", "action 1")
@@ -51,11 +51,14 @@ func Test_getHomeDir(t * testing.T) {
 	home, _ := os.UserHomeDir()
 	fmt.Printf("%s\n", home)
 	curr, _ := os.Getwd()
-	fmt.Printf("%s\n",curr)
+	fmt.Printf("%s\n", curr)
+	testDir := "/home/xuanchen/repos/pod_repo/CBL-Mariner/toolkit"
+	dirLen := len(testDir)
+	fmt.Printf("%s\n", testDir[dirLen - 19: ])
 }
 
 func Test_WritetoCSV_noRange(t *testing.T) {
-	InitCSVTest("build-time", false)
+	InitCSV("build-time", false)
 	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
 	time.Sleep(20 * time.Millisecond)
