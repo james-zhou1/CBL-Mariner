@@ -11,7 +11,7 @@ import (
 var timeArray [][]string
 
 // Reads a CSV file, and returns data to the terminal
-func ParseAndExport(filename string) {
+func CSVToArray(filename string) {
 	file, err := os.Open(filename)
 
 	if err != nil {
@@ -30,25 +30,32 @@ func ParseAndExport(filename string) {
 func ParseCSV() {
 
 	// create_worker_chroot_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/create_worker_chroot.csv"
-	image_config_validator_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imageconfigvalidator.csv"
-	image_pkg_fetcher_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imagepkgfetcher.csv"
-	imager_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/imager.csv"
-	roast_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/roast.csv"
-	// ParseAndExport(create_worker_chroot_path)
-	ParseAndExport(image_config_validator_path)
-	ParseAndExport(image_pkg_fetcher_path)
-	ParseAndExport(imager_path)
-	ParseAndExport(roast_path)
+	image_config_validator_path := "toolkit/tools/internal/timestamp/results/imageconfigvalidator.csv"
+	image_pkg_fetcher_path := "toolkit/tools/internal/timestamp/results/imagepkgfetcher.csv"
+	imager_path := "toolkit/tools/internal/timestamp/results/imager.csv"
+	roast_path := "toolkit/tools/internal/timestamp/results/roast.csv"
+	// CSVToArray(create_worker_chroot_path)
+	CSVToArray(image_config_validator_path)
+	CSVToArray(image_pkg_fetcher_path)
+	CSVToArray(imager_path)
+	CSVToArray(roast_path)
 
+	// Get the start time from the first timestamp entry
 	startTime, err := time.Parse(time.UnixDate, timeArray[0][4])
 	if err != nil {
 		panic(err)
 	}
+
+	// Get the end time from the last timestamp entry
 	endTime, err := time.Parse(time.UnixDate, timeArray[len(timeArray)-1][5])
 	if err != nil {
 		panic(err)
 	}
+
+	// Get the time difference (total build time)
 	difference := endTime.Sub(startTime)
+
+	// Print timestamps
 	for i := 0; i < len(timeArray); i++ {
 		fmt.Println(timeArray[i][0] + " " + timeArray[i][1] + " took " + timeArray[i][3] + ". ")
 	}
