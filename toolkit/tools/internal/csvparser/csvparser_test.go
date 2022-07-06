@@ -2,6 +2,7 @@ package csvparser
 
 import "testing"
 
-func Test_CSVParser(t *testing.T) {
-	ParseCSV()
+func Test_ParseCSV(t *testing.T) {
+	files := FilepathsToArrayTest()
+	ParseFiles(files)
 }
