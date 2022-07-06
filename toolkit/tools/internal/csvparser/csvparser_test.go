@@ -2,6 +2,6 @@ package csvparser
 
 import "testing"
 
-func Test_ExtractCSVData(t *testing.T) {
-	// ParseCSV()
+func Test_CSVParser(t *testing.T) {
+	ParseCSV()
 }
