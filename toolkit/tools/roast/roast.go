@@ -98,6 +98,8 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
+	csvparser.OutputCSVLog(csvparser.FilepathsToArray())
+
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {

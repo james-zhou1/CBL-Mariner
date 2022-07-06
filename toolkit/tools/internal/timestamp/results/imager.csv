@@ -1,4 +1,4 @@
-imager,Setting up,,766.391µs,Wed Jul  6 14:12:58 PDT 2022,Wed Jul  6 14:12:58 PDT 2022
-imager,buildSystemConfig,install packages into image,3.909784213s,Wed Jul  6 14:12:58 PDT 2022,Wed Jul  6 14:13:02 PDT 2022
-imager,buildSystemConfig,Create Parition to Mountpoint map,28.909957434s,Wed Jul  6 14:13:02 PDT 2022,Wed Jul  6 14:13:31 PDT 2022
-imager,buildSystemConfig,Cleanup encrypted disks,77.899µs,Wed Jul  6 14:13:31 PDT 2022,Wed Jul  6 14:13:31 PDT 2022
+imager,Setting up,,623.494µs,Wed Jul  6 14:34:50 PDT 2022,Wed Jul  6 14:34:50 PDT 2022
+imager,buildSystemConfig,install packages into image,3.457563499s,Wed Jul  6 14:34:50 PDT 2022,Wed Jul  6 14:34:54 PDT 2022
+imager,buildSystemConfig,Create Parition to Mountpoint map,28.50630249s,Wed Jul  6 14:34:54 PDT 2022,Wed Jul  6 14:35:22 PDT 2022
+imager,buildSystemConfig,Cleanup encrypted disks,55.7µs,Wed Jul  6 14:35:22 PDT 2022,Wed Jul  6 14:35:22 PDT 2022
