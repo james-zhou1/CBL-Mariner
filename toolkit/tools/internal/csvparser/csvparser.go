@@ -28,7 +28,7 @@ func CSVToArray(filename string) {
 }
 
 // Output list of file paths
-func FilepathsToArray() {
+func FilepathsToArray() []string {
 	wd, _ := os.Getwd()
 	idx := strings.Index(wd, "CBL-Mariner/toolkit") // 19 chars
 	wd = wd[0 : idx+19]
@@ -41,7 +41,7 @@ func FilepathsToArray() {
 
 	fileArray := []string{image_config_validator_path, image_pkg_fetcher_path, imager_path, roast_path}
 
-	fmt.Println(fileArray)
+	return fileArray
 }
 
 // ------------------------------- For testing purposes----------------------------------------------
@@ -81,7 +81,7 @@ func OutputCSVLog(files []string) {
 		panic(err)
 	}
 
-	// Get the time difference (total build time)
+	// Get the time difference (aka. total build time)
 	difference := endTime.Sub(startTime)
 
 	// Print timestamps
