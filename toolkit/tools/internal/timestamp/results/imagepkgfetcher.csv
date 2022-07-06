@@ -1,0 +1,9 @@
+imagepkgfetcher,Initialize cloner,,4.607239737s,Wed Jul  6 14:33:42 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Add network files,,1.445288ms,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Load config with abosolute paths,575.695µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Package names from config,94.299µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Add kernel packages from KernelOptions,11.7µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Add packages required by install tools,10.9µs,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:33:47 PDT 2022
+imagepkgfetcher,Clone RPM repo,Done cloning,1m2.390642457s,Wed Jul  6 14:33:47 PDT 2022,Wed Jul  6 14:34:49 PDT 2022
+imagepkgfetcher,Convert pkg to repo,,423.173774ms,Wed Jul  6 14:34:49 PDT 2022,Wed Jul  6 14:34:50 PDT 2022
+imagepkgfetcher,finishing up,,50.285982ms,Wed Jul  6 14:34:50 PDT 2022,Wed Jul  6 14:34:50 PDT 2022

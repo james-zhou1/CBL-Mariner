@@ -39,17 +39,25 @@ func New(toolName string, timeRange bool) *TimeInfo {
 // Is this function necessary...?
 func InitCSV(toolName string, timeRange bool) {
 	// Path subject to change later (to build folder?).
-	completePath := "tools/internal/timestamp/results/" + toolName + ".csv" // this line is the actual completePath
+	completePath := toolName + ".csv" 
 	
 	// Update the global object "Stamp".
 	Stamp = New(toolName, timeRange)
 
 	// mask := syscall.Umask(0)
 	// defer syscall.Umask(mask)
-	err := os.MkdirAll(filepath.Dir(completePath), 0644)
-	if err != nil {
+
+	// If statement will not be triggered if the user is testing an executable file in a sub-folder.
+	currDir, _ := os.Getwd()
+	if currDir[len(currDir) - 19 : ] == "CBL-Mariner/toolkit" {
+		// An image-build is probably running. 
+		completePath = "tools/internal/timestamp/results/" + completePath
+		err := os.MkdirAll(filepath.Dir(completePath), 0644)
+		if err != nil {
 		panic(err)
+		}
 	}
+
 	file, err := os.Create(completePath)
 	if err != nil {
 		panic(err)
@@ -57,27 +65,6 @@ func InitCSV(toolName string, timeRange bool) {
 
 	// Store file path information.
 	Stamp.filePath = completePath
-	file.Close()
-
-	// file, err := os.OpenFile(filePath + ".csv", os.O_CREATE | os.O_RDWR, 0644) // not sure what 0644 means but it works
-	// if err != nil {
-	// 	fmt.Printf("Failed to open the csv file. %s\n", err)
-	// 	return
-	// }
-	// file.Close()
-}
-
-// A temporary function that enables testing (from toolkit/tools/internal//timestamp) to run smoothly. 
-// Will not be used in the actual build-time tracking process.
-func InitCSVTest(toolName string, timeRange bool) {
-	path := toolName + ".csv"
-	Stamp = New(toolName, timeRange)
-	file, err := os.Create(path)
-	if err != nil {
-		panic(err)
-	}
-
-	Stamp.filePath = path
 	file.Close()
 }
 
@@ -91,13 +78,12 @@ func (info *TimeInfo) Start() {
 	info.startTime = time.Now()
 }
 
+// An internal function that helps record the timestamp.
 func (info *TimeInfo) track() {
 	info.endTime = time.Now()
 	info.duration = info.endTime.Sub(info.startTime)
-	// result := timeInfo{toolName, stepName, "", diff.String(), start.Format(time.RFC1123), end.Format(time.RFC1123), timeRange}
 }
 
-// output as a string
 // make a class output io.Writer
 func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io.Writer) {
 	// curr := track(start, toolName, stepName, timeRange)
@@ -158,6 +144,6 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 // figure out logger package (how to call logger everywhere without passing a parameter)
 
 // next step:
-// create a global instance of timestamp (initialized along with the logger)
 // features: initialize timestamp, flag each run (start & end, wipe out? )
 // make each of these function a method of the timeInfo struct
+// change csv destination to build/logs/csvlogs (?)
