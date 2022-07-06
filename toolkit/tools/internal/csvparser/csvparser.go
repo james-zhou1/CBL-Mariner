@@ -10,7 +10,7 @@ import (
 
 var timeArray [][]string
 
-// Reads a CSV file, and returns data to the terminal
+// Reads a CSV file and appends line by line to array
 func CSVToArray(filename string) {
 	file, err := os.Open(filename)
 
@@ -27,23 +27,47 @@ func CSVToArray(filename string) {
 
 }
 
-func ParseCSV() {
+// Output list of file paths
+func FilepathsToArray() {
 	wd, _ := os.Getwd()
 	idx := strings.Index(wd, "CBL-Mariner/toolkit") // 19 chars
-	wd = wd[0 : idx + 19]
+	wd = wd[0 : idx+19]
 	wd += "/tools/internal/timestamp/results/"
-	fmt.Printf("%s\n", wd)
 
-	// create_worker_chroot_path := "/home/james/repos/CBL-Mariner/toolkit/tools/internal/timestamp/results/create_worker_chroot.csv"
-	image_config_validator_path := "toolkit/tools/internal/timestamp/results/imageconfigvalidator.csv"
-	image_pkg_fetcher_path := "toolkit/tools/internal/timestamp/results/imagepkgfetcher.csv"
-	imager_path := "toolkit/tools/internal/timestamp/results/imager.csv"
-	roast_path := "toolkit/tools/internal/timestamp/results/roast.csv"
-	// CSVToArray(create_worker_chroot_path)
-	CSVToArray(image_config_validator_path)
-	CSVToArray(image_pkg_fetcher_path)
-	CSVToArray(imager_path)
-	CSVToArray(roast_path)
+	image_config_validator_path := wd + "imageconfigvalidator.csv"
+	image_pkg_fetcher_path := wd + "imagepkgfetcher.csv"
+	imager_path := wd + "imager.csv"
+	roast_path := wd + "roast.csv"
+
+	fileArray := []string{image_config_validator_path, image_pkg_fetcher_path, imager_path, roast_path}
+
+	fmt.Println(fileArray)
+}
+
+// ------------------------------- For testing purposes----------------------------------------------
+func FilepathsToArrayTest() []string {
+	wd, _ := os.Getwd()
+	idx := strings.Index(wd, "CBL-Mariner/toolkit")
+	wd = wd[0 : idx+19]
+	wd += "/tools/internal/csvparser/results_test/"
+
+	image_config_validator_path := wd + "imageconfigvalidator.csv"
+	image_pkg_fetcher_path := wd + "imagepkgfetcher.csv"
+	imager_path := wd + "imager.csv"
+	roast_path := wd + "roast.csv"
+
+	fileArray := []string{image_config_validator_path, image_pkg_fetcher_path, imager_path, roast_path}
+
+	return fileArray
+}
+
+// Take list of file paths and convert respective CSVs to parseable array format
+func ParseFiles(files []string) {
+
+	// Format each file to array format
+	for _, file := range files {
+		CSVToArray(file)
+	}
 
 	// Get the start time from the first timestamp entry
 	startTime, err := time.Parse(time.UnixDate, timeArray[0][4])
