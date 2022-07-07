@@ -27,7 +27,7 @@ func CSVToArray(filename string) {
 
 }
 
-// Output list of file paths
+// Return list of file paths
 func FilepathsToArray() []string {
 	wd, _ := os.Getwd()
 	idx := strings.Index(wd, "CBL-Mariner/toolkit") // 19 chars
