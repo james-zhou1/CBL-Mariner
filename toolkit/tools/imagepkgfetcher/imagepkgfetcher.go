@@ -118,8 +118,8 @@ func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath st
 	if err != nil {
 		return
 	}
-	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Load config with abosolute paths")
-	
+	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Load config with absolute paths")
+
 	packageVersionsInConfig, err := installutils.PackageNamesFromConfig(cfg)
 	if err != nil {
 		return
