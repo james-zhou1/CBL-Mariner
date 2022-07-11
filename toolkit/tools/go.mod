@@ -14,7 +14,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.1
 	github.com/ulikunitz/xz v0.5.10
-	golang.org/x/sys v0.0.0-20210304124612-50617c2ba197
+	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c
 	gonum.org/v1/gonum v0.9.3
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
@@ -24,8 +24,11 @@ require (
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
+	github.com/gosuri/uilive v0.0.4 // indirect
+	github.com/gosuri/uiprogress v0.0.1 // indirect
 	github.com/klauspost/compress v1.10.5 // indirect
 	github.com/lucasb-eyer/go-colorful v1.0.3 // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.7 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

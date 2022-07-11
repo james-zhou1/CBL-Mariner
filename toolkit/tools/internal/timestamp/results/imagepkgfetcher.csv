@@ -1,0 +1,6 @@
+imagepkgfetcher,Initialize cloner,,11.270649305s,Mon Jul 11 12:33:05 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
+imagepkgfetcher,Add network files,,2.844653ms,Mon Jul 11 12:33:16 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
+imagepkgfetcher,Clone RPM repo,Load config with absolute paths,1.024519ms,Mon Jul 11 12:33:16 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
+imagepkgfetcher,Clone RPM repo,Package names from config,167.803µs,Mon Jul 11 12:33:16 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
+imagepkgfetcher,Clone RPM repo,Add kernel packages from KernelOptions,55.602µs,Mon Jul 11 12:33:16 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
+imagepkgfetcher,Clone RPM repo,Add packages required by install tools,23.6µs,Mon Jul 11 12:33:16 EDT 2022,Mon Jul 11 12:33:16 EDT 2022
