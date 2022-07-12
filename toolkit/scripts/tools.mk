@@ -151,7 +151,7 @@ $(chroot_worker): $(worker_chroot_deps) $(go-bldtracker)
 else
 $(chroot_worker): $(go-bldtracker)
 endif
-	$(PKGGEN_DIR)/worker/create_worker_chroot.sh $(BUILD_DIR)/worker $(worker_chroot_manifest) $(toolchain_rpms_dir) $(LOGS_DIR) $(go-bldtracker)
+	$(PKGGEN_DIR)/worker/create_worker_chroot.sh $(BUILD_DIR)/worker $(worker_chroot_manifest) $(toolchain_rpms_dir) $(LOGS_DIR) $(go-bldtracker) $(TIMESTAMP_DIR)
 
 validate-chroot: $(go-validatechroot) $(chroot_worker)
 	$(go-validatechroot) \

@@ -48,15 +48,15 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
-	// stamp = timestamp.New("imagepkgfetcher.go", true)
+	timestampFile = app.Flag("timestamp-file", "File that stores timestamp for this program. ").Required().String()
 )
 
 func main() {
-	// stamp.New("imagepkgfetcher.go", true)
-	timestamp.InitCSV("imagepkgfetcher", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	
 	logger.InitBestEffort(*logFile, *logLevel)
+	timestamp.InitCSV(*timestampFile, true)
 
 	if *externalOnly && strings.TrimSpace(*inputGraph) == "" {
 		logger.Log.Fatal("input-graph must be provided if external-only is set.")

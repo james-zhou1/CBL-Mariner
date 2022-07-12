@@ -34,9 +34,9 @@ var (
 	outputDir       = app.Flag("output-dir", "Path to directory to place final image.").ExistingDir()
 	liveInstallFlag = app.Flag("live-install", "Enable to perform a live install to the disk specified in config file.").Bool()
 	emitProgress    = app.Flag("emit-progress", "Write progress updates to stdout, such as percent complete and current action.").Bool()
+	timestampFile	= app.Flag("timestamp-file", "File that stores timestamp for this program. ").Required().String()
 	logFile         = exe.LogFileFlag(app)
 	logLevel        = exe.LogLevelFlag(app)
-	// stamp           = timestamp.New("imager.go", true)
 )
 
 const (
@@ -58,13 +58,13 @@ const (
 )
 
 func main() {
-	timestamp.InitCSV("imager", true)
 	const defaultSystemConfig = 0
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	logger.InitBestEffort(*logFile, *logLevel)
+	timestamp.InitCSV(*timestampFile, true)
 
 	if *emitProgress {
 		installutils.EnableEmittingProgress()
