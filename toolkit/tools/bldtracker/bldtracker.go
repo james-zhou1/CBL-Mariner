@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -22,13 +23,22 @@ var (
 	scriptName = app.Flag("script-name", "The name of the current tool.").Required().String()
 	stepName   = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
-	filePath   = app.Flag("file-path", "The file that stores timestamp data.").Required().String()                            // currently must be absolute
+	filePath   = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().String()                            // currently must be absolute
 	mode       = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
+	completePath string
 )
 
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	idx := strings.Index(*scriptName, ".")
+	var shortName string
+	if idx < 0 { // if scriptName does not have a suffix
+		shortName = *scriptName
+	} else { // if scriptName has a suffix
+		shortName = (*scriptName)[:idx]
+	}
+	completePath = *filePath + "/" + shortName + ".csv"
 	switch *mode {
 	case "n":
 		initialize()
@@ -44,21 +54,21 @@ func main() {
 func initialize() {
 	mask := syscall.Umask(0)
 	defer syscall.Umask(mask)
-	err := os.MkdirAll(filepath.Dir(*filePath), 0777)
+	err := os.MkdirAll(filepath.Dir(completePath), 0777)
 	if err != nil {
 		panic(err)
 	}
-	file, err := os.Create(*filePath)
+	file, err := os.Create(completePath)
 	if err != nil {
-		fmt.Printf("Unable to create file: %s", *filePath)
+		fmt.Printf("Unable to create file: %s", completePath)
 	}
 	file.Close()
 }
 
 func record() {
-	file, err := os.OpenFile(*filePath, os.O_APPEND|os.O_WRONLY, 0777)
+	file, err := os.OpenFile(completePath, os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
-		fmt.Printf("Unable to open file (may not have been created): %s", *filePath)
+		fmt.Printf("Unable to open file (may not have been created): %s", completePath)
 	}
 	defer file.Close()
 	// Create a new csv writer.
@@ -68,13 +78,13 @@ func record() {
 	// err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
 	if err != nil {
-		fmt.Printf("Unable to write to file: %s", *filePath)
+		fmt.Printf("Unable to write to file: %s", completePath)
 	}
 }
 
-func toString(s *string) string {
-	if s != nil {
-		return *s
-	}
-	return ""
-}
+// func toString(s *string) string {
+// 	if s != nil {
+// 		return *s
+// 	}
+// 	return ""
+// }

@@ -6,6 +6,7 @@ package timestamp
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	// "regexp"
 	// "strings"
@@ -32,7 +33,7 @@ func Test_WritetoFile_noRange_instant(t *testing.T) {
 }
 
 func Test_WritetoCSV_range(t *testing.T) {
-	InitCSV("build-time", true)
+	InitCSV("build-time.csv", true)
 	Stamp.Start()
 	time.Sleep(10 * time.Millisecond)
 	Stamp.RecordToCSV("step 1", "action 1")
@@ -58,7 +59,7 @@ func Test_getHomeDir(t * testing.T) {
 }
 
 func Test_WritetoCSV_noRange(t *testing.T) {
-	InitCSV("build-time", false)
+	InitCSV("build-time.csv", false)
 	time.Sleep(10 * time.Millisecond) // extra sleep
 	// info2.Start()
 	time.Sleep(20 * time.Millisecond)
@@ -101,6 +102,13 @@ func WritetoCSV(info *TimeInfo, seconds time.Duration) {
 	Stamp.Start()
 	time.Sleep(seconds * time.Millisecond)
 	Stamp.RecordToCSV("test tool", "test step")
+}
+
+func Test_filename(t *testing.T) {
+	completePath := "/home/xuanchen/repos/pod_repo/CBL-Mariner/build/timestamp/imageconfigvalidator.csv"
+	fileName := filepath.Base(completePath)
+	fmt.Printf("%s \n", fileName)
+	fmt.Printf("%s \n", fileName[:len(fileName) - 4])
 }
 
 // func Test_WritetoCSV_Delay(t *testing.T) {
