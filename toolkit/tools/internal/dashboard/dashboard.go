@@ -34,23 +34,16 @@ func main() {
 
 	for {
 		time.Sleep(1 * time.Second)
-<<<<<<< HEAD
-=======
 
 		// Check if the target directory exists. Assume we only need to check one directory for now.
->>>>>>> refs/remotes/origin/appleli/timestamp
 		_, err := os.Stat(targetDir)
 		if os.IsNotExist(err) {
 			continue
 		}
 		for filePath, _ := range targetCSV {
-<<<<<<< HEAD
-			_, err = os.Stat(targetDir + filePath)
-=======
 			// currStat (the deleted 1st variable) will be important when we try to print out info in front of the progress bars.
-			_, err := os.Stat(targetDir + filePath) 
+			_, err := os.Stat(targetDir + filePath)
 			// Check if the file exists.
->>>>>>> refs/remotes/origin/appleli/timestamp
 			if os.IsNotExist(err) {
 				continue
 			}
