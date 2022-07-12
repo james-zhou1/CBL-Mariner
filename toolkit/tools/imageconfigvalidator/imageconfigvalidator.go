@@ -29,6 +29,8 @@ var (
 	input       = exe.InputStringFlag(app, "Path to the image config file.")
 	baseDirPath = exe.InputDirFlag(app, "Base directory for relative file paths from the config.")
 
+	timestampFile = app.Flag("timestamp-file", "File that stores timestamp for this program.").Required().String()
+
 	// stamp = timestamp.New("imageconfigvalidator.go", true)
 )
 
@@ -39,10 +41,11 @@ func main() {
 
 	const returnCodeOnError = 1
 
-	timestamp.InitCSV("imageconfigvalidator", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	
 	logger.InitBestEffort(*logFile, *logLevel)
+	timestamp.InitCSV(*timestampFile, true)
 
 	inPath, err := filepath.Abs(*input)
 	logger.PanicOnError(err, "Error when calculating input path")

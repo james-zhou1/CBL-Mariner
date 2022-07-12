@@ -42,6 +42,8 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
+	
+
 	inputDir  = exe.InputDirFlag(app, "A directory containing a .RAW image or a rootfs directory")
 	outputDir = exe.OutputDirFlag(app, "A destination directory for the output image")
 
@@ -54,14 +56,14 @@ var (
 
 	imageTag = app.Flag("image-tag", "Tag (text) appended to the image name. Empty by default.").String()
 
-	// stamp = timestamp.New("roast.go", true)
+	timestampFile = app.Flag("timestamp-file", "File that stores timestamp for this program.").Required().String()
 )
 
 func main() {
-	timestamp.InitCSV("roast", true)
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
+	timestamp.InitCSV(*timestampFile, true)
 
 	if *workers <= 0 {
 		logger.Log.Panicf("Value in --workers must be greater than zero. Found %d", *workers)
@@ -98,7 +100,7 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
-	csvparser.OutputCSVLog(csvparser.FilepathsToArray())
+	csvparser.OutputCSVLog(csvparser.FilepathsToArray(filepath.Dir(*timestampFile)))
 
 }
 

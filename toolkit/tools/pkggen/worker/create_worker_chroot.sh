@@ -7,13 +7,14 @@
 # $3 path to find RPMs. May be in PATH/<arch>/*.rpm
 # $4 path to log directory
 
-[ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ] && [ -n "$5" ] || { echo "Usage: create_worker.sh <./worker_base_folder> <rpms_to_install.txt> <./path_to_rpms> <./log_dir> <./bldtracker>"; exit; }
+[ -n "$1" ] && [ -n "$2" ] && [ -n "$3" ] && [ -n "$4" ] && [ -n "$5" ] && [ -n "$6" ] || { echo "Usage: create_worker.sh <./worker_base_folder> <rpms_to_install.txt> <./path_to_rpms> <./log_dir> <./bldtracker>"; exit; }
 
 chroot_base=$1
 packages=$2
 rpm_path=$3
 log_path=$4
 bldtracker=$5
+timestamp_dir=$6
 
 chroot_name="worker_chroot"
 chroot_builder_folder=$chroot_base/$chroot_name
@@ -23,7 +24,7 @@ chroot_log="$log_path"/$chroot_name.log
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="test step" \
-    --file-path="tools/internal/timestamp/results/create_worker_chroot.csv" \
+    --file-path=$timestamp_dir \
     --mode="n"
 
 install_one_toolchain_rpm () {
@@ -64,7 +65,7 @@ done < "$packages"
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="finish adding RPM to worker chroot" \
-    --file-path="tools/internal/timestamp/results/create_worker_chroot.csv" \
+    --file-path=$timestamp_dir \
     --mode="r"
 
 TEMP_DB_PATH=/temp_db
@@ -86,7 +87,7 @@ done < "$packages"
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="finish adding RPM DB entry" \
-    --file-path="tools/internal/timestamp/results/create_worker_chroot.csv" \
+    --file-path=$timestamp_dir \
     --mode="r"
 
 echo "Overwriting old RPM database with the results of the conversion." | tee -a "$chroot_log"
@@ -103,7 +104,7 @@ done
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="finish importing GPG keys" \
-    --file-path="tools/internal/timestamp/results/create_worker_chroot.csv" \
+    --file-path=$timestamp_dir \
     --mode="r"
 
 HOME=$ORIGINAL_HOME
@@ -129,6 +130,6 @@ echo "Done creating $chroot_archive." | tee -a "$chroot_log"
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="Done installing all packages" \
-    --file-path="tools/internal/timestamp/results/create_worker_chroot.csv" \
+    --file-path=$timestamp_dir \
     --mode="r"
 
