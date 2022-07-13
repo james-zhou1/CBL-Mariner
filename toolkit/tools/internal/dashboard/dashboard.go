@@ -28,19 +28,15 @@ var (
 
 func main() {
 	fmt.Println("Starting dashboard")
-	uiprogress.Start() // start rendering
-	bar := uiprogress.AddBar(totalProgress)
-	bar.AppendCompleted()
-	bar.PrependElapsed()
+	uiprogress.Start()
+	bar := uiprogress.AddBar(totalProgress).AppendCompleted().PrependElapsed()
 
 	wd, _ := os.Getwd()
 	idx := strings.Index(wd, "CBL-Mariner")
 	wd = wd[0 : idx+11]
 	targetDir = wd + "/build/timestamp/"
 
-	// Use an infinite for loop to watch out for new updates
 	for {
-		// run this iteration periodically for smaller overhead
 		time.Sleep(1 * time.Second)
 		bar.Set(currProgress)
 
