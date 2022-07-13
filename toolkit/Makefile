@@ -70,6 +70,7 @@ BUILD_SPECS_DIR  ?= $(BUILD_DIR)/INTERMEDIATE_SPECS
 STATUS_FLAGS_DIR ?= $(BUILD_DIR)/make_status
 CHROOT_DIR       ?= $(BUILD_DIR)/worker/chroot
 IMAGEGEN_DIR     ?= $(BUILD_DIR)/imagegen
+TIMESTAMP_DIR    ?= $(BUILD_DIR)/timestamp
 
 RPMRC_DIR        ?= $(MACRO_DIR)/usr/lib/rpm
 
