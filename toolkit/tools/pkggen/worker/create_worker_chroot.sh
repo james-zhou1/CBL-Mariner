@@ -23,7 +23,7 @@ chroot_log="$log_path"/$chroot_name.log
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="test step" \
+    --step-name="starting create_worker_chroot" \
     --file-path=$timestamp_dir \
     --mode="n"
 

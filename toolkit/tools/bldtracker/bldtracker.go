@@ -63,6 +63,7 @@ func initialize() {
 		fmt.Printf("Unable to create file: %s", completePath)
 	}
 	file.Close()
+	record()
 }
 
 func record() {
