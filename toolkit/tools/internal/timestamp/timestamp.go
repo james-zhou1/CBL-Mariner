@@ -22,8 +22,6 @@ type TimeInfo struct {
 	startTime  time.Time     // Start time of the step
 	endTime    time.Time     // End time for the step
 	timeRange  bool          // Whether to record start and end time
-	// currentProgress	int	// Proportion of the current task
-	// maxProgress		int	// Maximum progress for parent level
 }
 
 // Create a new instance of timeInfo struct.
@@ -42,31 +40,12 @@ func New(toolName string, timeRange bool) *TimeInfo {
  *	 timeRange: A boolean that will record the start and end time of a timestamp interval if set to true.
  */
 func InitCSV(completePath string, timeRange bool) {
-	
+
 	// Update the global object "Stamp".
 	// assume the base directory of completePath ends with .csv for now (possible to be .json later).
 	fileName := filepath.Base(completePath)
 	fmt.Println(fileName)
-	// fmt.Println(fileName[:len(fileName) - 4])
 	Stamp = New(fileName, timeRange)
-
-	// mask := syscall.Umask(0)
-	// defer syscall.Umask(mask)
-
-	// If statement will not be triggered if the user is testing an executable file in a sub-folder.
-	// currDir, _ := os.Getwd()
-	// if currDir[len(currDir) - 19 : ] == "CBL-Mariner/toolkit" {
-	// 	// An image-build is probably running. 
-	// 	completePath = "tools/internal/timestamp/results/" + completePath
-	// 	err := os.MkdirAll(filepath.Dir(completePath), 0644)
-	// 	if err != nil {
-	// 	panic(err)
-	// 	}
-	// }
-	// err := os.MkdirAll(filepath.Dir(completePath), os.ModePerm)
-	// if err != nil {
-	// 	return
-	// }
 
 	file, err := os.Create(completePath)
 	if err != nil {
@@ -97,7 +76,6 @@ func (info *TimeInfo) track() {
 
 // make a class output io.Writer
 func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io.Writer) {
-	// curr := track(start, toolName, stepName, timeRange)
 	info.track()
 	info.stepName = stepName
 	info.actionName = actionName
@@ -131,15 +109,12 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	defer writer.Flush()
 
 	// Run
-	// curr := track(start, toolName, stepName, timeRange)
 	info.track()
 	info.stepName = stepName
 	info.actionName = actionName
 	if info.timeRange {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
 			info.startTime.Format(time.UnixDate), info.endTime.Format(time.UnixDate)})
-		// err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
-		// 	info.startTime.Format(time.RFC1123), info.endTime.Format(time.RFC1123)})
 	} else {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	}
@@ -150,11 +125,3 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	// In case .start() is not called
 	info.startTime = info.endTime
 }
-
-// output sth in the trace level?
-// figure out logger package (how to call logger everywhere without passing a parameter)
-
-// next step:
-// features: initialize timestamp, flag each run (start & end, wipe out? )
-// make each of these function a method of the timeInfo struct
-// change csv destination to build/logs/csvlogs (?)

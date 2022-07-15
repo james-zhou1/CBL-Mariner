@@ -19,12 +19,12 @@ import (
 )
 
 var (
-	app        = kingpin.New("bldtracker", "A tool that helps track build time of different steps in the makefile.")
-	scriptName = app.Flag("script-name", "The name of the current tool.").Required().String()
-	stepName   = app.Flag("step-name", "The name of the current step.").Required().String()
-	actionName = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
-	filePath   = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().String()                            // currently must be absolute
-	mode       = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
+	app          = kingpin.New("bldtracker", "A tool that helps track build time of different steps in the makefile.")
+	scriptName   = app.Flag("script-name", "The name of the current tool.").Required().String()
+	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
+	actionName   = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
+	filePath     = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().String()                          // currently must be absolute
+	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
 	completePath string
 )
 
@@ -75,16 +75,8 @@ func record() {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	// err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
 	if err != nil {
 		fmt.Printf("Unable to write to file: %s", completePath)
 	}
 }
-
-// func toString(s *string) string {
-// 	if s != nil {
-// 		return *s
-// 	}
-// 	return ""
-// }

@@ -44,23 +44,6 @@ func FilepathsToArray(parentDir string) []string {
 	return fileArray
 }
 
-// // ------------------------------- For testing purposes----------------------------------------------
-// func FilepathsToArrayTest() []string {
-// 	wd, _ := os.Getwd()
-// 	idx := strings.Index(wd, "CBL-Mariner/toolkit")
-// 	wd = wd[0 : idx+19]
-// 	wd += "/tools/internal/csvparser/results_test/"
-
-// 	image_config_validator_path := wd + "imageconfigvalidator.csv"
-// 	image_pkg_fetcher_path := wd + "imagepkgfetcher.csv"
-// 	imager_path := wd + "imager.csv"
-// 	roast_path := wd + "roast.csv"
-
-// 	fileArray := []string{image_config_validator_path, image_pkg_fetcher_path, imager_path, roast_path}
-
-// 	return fileArray
-// }
-
 // Take list of file paths, parse, and output log to terminal
 func OutputCSVLog(files []string) {
 
