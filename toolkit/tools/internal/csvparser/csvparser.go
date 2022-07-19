@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-// Parses the timestamps stored in csv files and print them 
-// to the terminal at the end of the build. 
+// Parses the timestamps stored in csv files and print them
+// to the terminal at the end of the build.
 
 package csvparser
 
@@ -15,9 +15,9 @@ import (
 )
 
 var (
-	timeArray [][]string	// A 2-D array used to store all timestamps from csvs.
-	// A list of csv files to be parsed. 
-	files     = []string{"/imageconfigvalidator.csv", "/imagepkgfetcher.csv", "/imager.csv", "/roast.csv"}
+	timeArray [][]string // A 2-D array used to store all timestamps from csvs.
+	// A list of csv files to be parsed.
+	files = []string{"/imageconfigvalidator.csv", "/imagepkgfetcher.csv", "/imager.csv", "/roast.csv"}
 )
 
 // Reads a CSV file and appends line by line to array.
@@ -48,7 +48,7 @@ func OutputCSVLog(parentDir string) {
 	}
 
 	// Get the start and end time from the first timestamp entry.
-	// Start time will be the ModTime for "init" if it exists, otherwise will be the first csv entry. 
+	// Start time will be the ModTime for "init" if it exists, otherwise will be the first csv entry.
 	if os.IsNotExist(err) {
 		fmt.Printf("start: %s\n", timeArray[0][4])
 		startTime, err = time.Parse(time.UnixDate, timeArray[0][4])
@@ -59,12 +59,12 @@ func OutputCSVLog(parentDir string) {
 	fmt.Printf("end: %s\n", timeArray[len(timeArray)-1][5])
 
 	if err != nil {
-		panic(err)
+		fmt.Printf("Unable to parse start time for the build. \n")
 	}
 
 	endTime, err := time.Parse(time.UnixDate, timeArray[len(timeArray)-1][5])
 	if err != nil {
-		panic(err)
+		fmt.Printf("Unable to parse end time for the build. \n")
 	}
 
 	// Get the total build time.

@@ -21,8 +21,9 @@ var (
 	scriptName   = app.Flag("script-name", "The name of the current tool.").Required().String()
 	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName   = app.Flag("action-name", "The name of the current action.").Default("").String()
-	filePath     = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().ExistingDir()	// currently must be absolute
-	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() 
+	fileDir		 = app.Flag("file-dir", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
+	validModes 	 = []string{"n", "r"}
+	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().Enum(validModes...)
 	completePath string
 )
 
@@ -31,9 +32,16 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	// Format the script name by removing ".sh".
+	idx := strings.Index(*scriptName, ".")
 	var shortName string
-        shortName, _, _ = strings.Cut((*scriptName), ".")
-	completePath = *filePath + "/" + shortName + ".csv"
+	if idx < 0 {	// if scriptName does not have a suffix
+		shortName = *scriptName
+	} else {		// if scriptName has a suffix
+		shortName = (*scriptName)[:idx]
+	}
+	completePath = *fileDir + "/" + shortName + ".csv"
+
+	// Perform different actions based on the input "mode". 
 	switch *mode {
 	case "n":
 		initialize()
@@ -46,7 +54,7 @@ func main() {
 	}
 }
 
-// Creates a csv specifically for the shell script mentioned in "scriptName". 
+// Creates a csv specifically for the shell script mentioned in "scriptName".
 func initialize() {
 	file, err := os.Create(completePath)
 	if err != nil {
@@ -58,14 +66,14 @@ func initialize() {
 	record()
 }
 
-// Records a new timestamp to the specific csv for the specified shell script. 
+// Records a new timestamp to the specific csv for the specified shell script.
 func record() {
 	file, err := os.OpenFile(completePath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Printf("Unable to open file (may not have been created): %s", completePath)
 	}
 	defer file.Close()
-	
+
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 

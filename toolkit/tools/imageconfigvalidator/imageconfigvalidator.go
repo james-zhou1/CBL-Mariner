@@ -30,27 +30,13 @@ var (
 	baseDirPath = exe.InputDirFlag(app, "Base directory for relative file paths from the config.")
 
 	timestampFile = app.Flag("timestamp-file", "File that stores timestamp for this program.").Required().String()
-<<<<<<< HEAD
-
-	// stamp = timestamp.New("imageconfigvalidator.go", true)
-=======
->>>>>>> ef40b5ffa01c9d65bcde98ff70242be2dfea50e4
 )
 
 func main() {
-	// defer timestamp.TrackToFile(time.Now(), "Image config validator", "1", true, os.Stdout)
-	// defer timestamp.TrackToCSV(time.Now(), "Image config validator", "1", true)
-	stamp.InitCSV("imageconfigvalidator")
-
 	const returnCodeOnError = 1
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> ef40b5ffa01c9d65bcde98ff70242be2dfea50e4
 	logger.InitBestEffort(*logFile, *logLevel)
 	timestamp.InitCSV(*timestampFile, true)
 
