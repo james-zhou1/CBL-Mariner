@@ -9,9 +9,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
@@ -31,6 +29,8 @@ var (
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	// Format the script name by removing ".sh"
 	idx := strings.Index(*scriptName, ".")
 	var shortName string
 	if idx < 0 { // if scriptName does not have a suffix
@@ -52,17 +52,14 @@ func main() {
 }
 
 func initialize() {
-	mask := syscall.Umask(0)
-	defer syscall.Umask(mask)
-	err := os.MkdirAll(filepath.Dir(completePath), 0777)
-	if err != nil {
-		panic(err)
-	}
 	file, err := os.Create(completePath)
 	if err != nil {
 		fmt.Printf("Unable to create file: %s", completePath)
 	}
 	file.Close()
+
+	// Make a timestamp record right when a shell script starts.
+	record()
 }
 
 func record() {

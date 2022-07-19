@@ -42,8 +42,6 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
-	
-
 	inputDir  = exe.InputDirFlag(app, "A directory containing a .RAW image or a rootfs directory")
 	outputDir = exe.OutputDirFlag(app, "A destination directory for the output image")
 
@@ -100,7 +98,7 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
-	csvparser.OutputCSVLog(csvparser.FilepathsToArray(filepath.Dir(*timestampFile)))
+	csvparser.OutputCSVLog(filepath.Dir(*timestampFile))
 
 }
 

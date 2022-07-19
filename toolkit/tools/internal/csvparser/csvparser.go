@@ -8,7 +8,10 @@ import (
 	"time"
 )
 
-var timeArray [][]string
+var (
+	timeArray [][]string
+	files     = []string{"/imageconfigvalidator.csv", "/imagepkgfetcher.csv", "/imager.csv", "/roast.csv"}
+)
 
 // Reads a CSV file and appends line by line to array
 func CSVToArray(filename string) {
@@ -45,20 +48,29 @@ func FilepathsToArray(parentDir string) []string {
 }
 
 // Take list of file paths, parse, and output log to terminal
-func OutputCSVLog(files []string) {
+func OutputCSVLog(parentDir string) {
+	var startTime time.Time
+	init_file, err := os.Stat(parentDir + "/init")
 
 	// Format each file to array format
 	for _, file := range files {
-		CSVToArray(file)
+		CSVToArray(parentDir + file)
 	}
 
-	// Get the start time from the first timestamp entry
-	startTime, err := time.Parse(time.UnixDate, timeArray[0][4])
+	// Get the start and end time from the first timestamp entry
+	if os.IsNotExist(err) {
+		fmt.Printf("start: %s\n", timeArray[0][4])
+		startTime, err = time.Parse(time.UnixDate, timeArray[0][4])
+	} else {
+		fmt.Printf("start: %s\n", init_file.ModTime().Format(time.UnixDate))
+		startTime = init_file.ModTime()
+	}
+	fmt.Printf("end: %s\n", timeArray[len(timeArray)-1][5])
+
 	if err != nil {
 		panic(err)
 	}
 
-	// Get the end time from the last timestamp entry
 	endTime, err := time.Parse(time.UnixDate, timeArray[len(timeArray)-1][5])
 	if err != nil {
 		panic(err)

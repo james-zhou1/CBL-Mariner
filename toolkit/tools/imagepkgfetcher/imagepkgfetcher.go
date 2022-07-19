@@ -54,7 +54,7 @@ var (
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	
+
 	logger.InitBestEffort(*logFile, *logLevel)
 	timestamp.InitCSV(*timestampFile, true)
 
@@ -91,8 +91,6 @@ func main() {
 	if err != nil {
 		logger.Log.Panicf("Failed to clone RPM repo. Error: %s", err)
 	}
-
-	// timestamp.Stamp.RecordToCSV("Clone RPM repo", "")
 
 	logger.Log.Info("Configuring downloaded RPMs as a local repository")
 	err = cloner.ConvertDownloadedPackagesIntoRepo()
