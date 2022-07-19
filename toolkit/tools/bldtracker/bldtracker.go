@@ -31,13 +31,8 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	// Format the script name by removing ".sh"
-	idx := strings.Index(*scriptName, ".")
 	var shortName string
-	if idx < 0 { // if scriptName does not have a suffix
-		shortName = *scriptName
-	} else { // if scriptName has a suffix
-		shortName = (*scriptName)[:idx]
-	}
+        shortName, _, _ = strings.Cut((*scriptName), ".")
 	completePath = *filePath + "/" + shortName + ".csv"
 	switch *mode {
 	case "n":
