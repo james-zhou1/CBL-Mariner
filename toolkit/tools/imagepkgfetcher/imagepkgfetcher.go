@@ -55,7 +55,7 @@ func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
-	timestamp.InitCSV(*timestampFile, true)
+	timestamp.InitCSV(*timestampFile)
 
 	if *externalOnly && strings.TrimSpace(*inputGraph) == "" {
 		logger.Log.Fatal("input-graph must be provided if external-only is set.")

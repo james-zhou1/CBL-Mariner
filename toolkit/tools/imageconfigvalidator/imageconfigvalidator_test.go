@@ -21,7 +21,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	timestamp.InitCSV("imageconfigvalidator_test", true)
+	timestamp.InitCSV("imageconfigvalidator_test.csv")
 	logger.InitStderrLog()
 	os.Exit(m.Run())
 }

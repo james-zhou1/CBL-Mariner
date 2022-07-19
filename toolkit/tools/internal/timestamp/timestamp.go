@@ -13,10 +13,12 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 )
 
 var (
-	Stamp *TimeInfo // A shared TimeInfo object.
+	Stamp = &TimeInfo{} // A shared TimeInfo object that is by default empty; will log an warning if the empty object is called.
 )
 
 // TimeInfo holds information needed for timestamping a go program.
@@ -32,26 +34,24 @@ type TimeInfo struct {
 }
 
 // Create a new instance of timeInfo struct.
-func New(toolName string, timeRange bool) *TimeInfo {
+func New(toolName string) *TimeInfo {
 	return &TimeInfo{
 		toolName:  toolName,
-		timeRange: timeRange,
+		timeRange: true,
 		startTime: time.Now(),
 	}
 }
 
 // Creates the file that every subsequent timestamp in this go program will write to.
-func InitCSV(completePath string, timeRange bool) {
+func InitCSV(completePath string) {
 	// Update the global object "Stamp".
 	// Assume the base directory of completePath ends with .csv for now (possible to be .json later).
 	fileName := filepath.Base(completePath)
-	fmt.Println(fileName)
-	fmt.Println(filepath.Dir(completePath))
-	Stamp = New(fileName, timeRange)
+	Stamp = New(fileName)
 
 	file, err := os.Create(completePath)
 	if err != nil {
-		fmt.Printf("Unable to create file %s: %s \n", completePath, err)
+		logger.Log.Warnf("Unable to create file %s: %s \n", completePath, err)
 	}
 
 	// Store file path information.
@@ -61,6 +61,11 @@ func InitCSV(completePath string, timeRange bool) {
 
 // Start recording time for a new operation.
 func (info *TimeInfo) Start() {
+	// If we have not set up TimeInfo, log a warning and do nothing.
+	if *info == (TimeInfo{}) {
+		logger.Log.Warnf("Unable to record timestamp; 'timestamp.Stamp' has not been set up for this file.")
+		return
+	}
 	info.startTime = time.Now()
 }
 
@@ -85,7 +90,7 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 	}
 	_, err := io.WriteString(writer, msg)
 	if err != nil {
-		fmt.Printf("Fail to write to file. %s\n", err)
+		logger.Log.Warnf("Fail to write to file. %s\n", err)
 	}
 
 	// In case .start() is not called.
@@ -94,10 +99,16 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 
 // Records a new timestamp and writes it to the corresponding csv file.
 func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
+	fmt.Printf("executing recordToCSV() \n")
+	// If we have not set up TimeInfo, log a warning and do nothing.
+	if *info == (TimeInfo{}) {
+		logger.Log.Warnf("Unable to record timestamp; 'timestamp.Stamp' has not been set up for this file.")
+		return
+	}
 	// Create a new .csv file.
 	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Printf("Failed to open the csv file. %s\n", err)
+		logger.Log.Warnf("Failed to open the csv file. %s\n", err)
 		return
 	}
 	defer file.Close()
@@ -116,7 +127,7 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
 	}
 	if err != nil {
-		fmt.Printf("Fail to write to file. %s\n", err)
+		logger.Log.Warnf("Fail to write to file. %s\n", err)
 	}
 
 	// In case .start() is not called.

@@ -26,7 +26,7 @@ var (
 )
 
 func main() {
-	timestamp.InitCSV("boilerplate", true)
+	timestamp.InitCSV("boilerplate")
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))

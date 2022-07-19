@@ -64,7 +64,7 @@ func main() {
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	logger.InitBestEffort(*logFile, *logLevel)
-	timestamp.InitCSV(*timestampFile, true)
+	timestamp.InitCSV(*timestampFile)
 
 	if *emitProgress {
 		installutils.EnableEmittingProgress()

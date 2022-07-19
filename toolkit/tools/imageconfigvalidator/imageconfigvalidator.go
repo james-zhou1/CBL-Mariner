@@ -38,7 +38,7 @@ func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 	logger.InitBestEffort(*logFile, *logLevel)
-	timestamp.InitCSV(*timestampFile, true)
+	timestamp.InitCSV(*timestampFile)
 
 	inPath, err := filepath.Abs(*input)
 	logger.PanicOnError(err, "Error when calculating input path")
