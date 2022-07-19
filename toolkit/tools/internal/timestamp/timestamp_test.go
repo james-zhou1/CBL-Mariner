@@ -1,5 +1,7 @@
-// Copyright Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+// Test cases for timestamp.go.
 
 package timestamp
 

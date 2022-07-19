@@ -1,3 +1,9 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// Records the run time for different parts of a go program
+// and its nested calls to other go programs.
+
 package timestamp
 
 import (
@@ -10,11 +16,12 @@ import (
 )
 
 var (
-	Stamp *TimeInfo
+	Stamp *TimeInfo	// A shared TimeInfo object. 
 )
 
+// TimeInfo holds information needed for timestamping a go program. 
 type TimeInfo struct {
-	filePath   string        // Path to store all timestamps.
+	filePath   string        // Path to store all timestamps
 	toolName   string        // Name of the tool (consistent for all timestamps related to this object)
 	stepName   string        // Name of the step
 	actionName string        // Subaction within current step
@@ -33,16 +40,10 @@ func New(toolName string, timeRange bool) *TimeInfo {
 	}
 }
 
-/*
- * Creates the file that every preceding timestamp in this go program will write to.
- * Input:
- *	 completePath: A string representing the absolute path where all of the timestamps will be stored.
- *	 timeRange: A boolean that will record the start and end time of a timestamp interval if set to true.
- */
+ // Creates the file that every subsequent timestamp in this go program will write to.
 func InitCSV(completePath string, timeRange bool) {
-
 	// Update the global object "Stamp".
-	// assume the base directory of completePath ends with .csv for now (possible to be .json later).
+	// Assume the base directory of completePath ends with .csv for now (possible to be .json later).
 	fileName := filepath.Base(completePath)
 	fmt.Println(fileName)
 	Stamp = New(fileName, timeRange)
@@ -58,11 +59,6 @@ func InitCSV(completePath string, timeRange bool) {
 	file.Close()
 }
 
-/*
- * Another possible option is to imput the step names at both .start() and .record().
- * If the two don't match, then wipe out the time recorded in timeInfo.startTime and
- * only record the finish time of the task.
- */
 // Start recording time for a new operation.
 func (info *TimeInfo) Start() {
 	info.startTime = time.Now()
@@ -74,11 +70,13 @@ func (info *TimeInfo) track() {
 	info.duration = info.endTime.Sub(info.startTime)
 }
 
-// make a class output io.Writer
+// Records a new timestamp and outputs it through the io.Writer specified in the input. 
 func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io.Writer) {
 	info.track()
 	info.stepName = stepName
 	info.actionName = actionName
+
+	// Generates the message. 
 	msg := info.stepName + " " + info.actionName + " in " + info.toolName + " took " + info.duration.String() + ". "
 	if info.timeRange {
 		msg += "Started at " + info.startTime.Format(time.UnixDate) + "; ended at " + info.endTime.Format(time.UnixDate) + ". \n"
@@ -90,25 +88,24 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 		panic(err)
 	}
 
-	// In case .start() is not called
+	// In case .start() is not called.
 	info.startTime = info.endTime
 }
 
-// go tool for csv files (for future parsing), tool name, step name, time, flag for time range
+// Records a new timestamp and writes it to the corresponding csv file. 
 func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
-	// Create a new .csv file. Should I add os.O_CREATE tag here?
-	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0777) // not sure what 0644 means but it works
+	// Create a new .csv file. 
+	file, err := os.OpenFile(info.filePath, os.O_APPEND|os.O_WRONLY, 0644) 
 	if err != nil {
 		fmt.Printf("Failed to open the csv file. %s\n", err)
 		return
 	}
 	defer file.Close()
 
-	// Create a new csv writer.
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	// Run
+	// Writes the timestamp. 
 	info.track()
 	info.stepName = stepName
 	info.actionName = actionName
@@ -122,6 +119,6 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 		fmt.Printf("Fail to write to file. %s\n", err)
 	}
 
-	// In case .start() is not called
+	// In case .start() is not called.
 	info.startTime = info.endTime
 }

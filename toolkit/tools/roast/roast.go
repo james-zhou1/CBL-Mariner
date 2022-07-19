@@ -100,7 +100,7 @@ func main() {
 		logger.Log.Panic(err)
 	}
 	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
-	csvparser.OutputCSVLog(csvparser.FilepathsToArray(filepath.Dir(*timestampFile)))
+	csvparser.OutputCSVLog(filepath.Dir(*timestampFile))
 
 }
 

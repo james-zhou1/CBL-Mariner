@@ -34,6 +34,5 @@ func main() {
 	logger.InitBestEffort(*logFile, *logLevel)
 
 	logger.Log.Info(hello.World())
-	
 	timestamp.Stamp.RecordToCSV("test step", "test action")
 }
