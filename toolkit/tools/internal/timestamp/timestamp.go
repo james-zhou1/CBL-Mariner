@@ -34,7 +34,7 @@ func New(toolName string, timeRange bool) *TimeInfo {
 }
 
 /*
- * Creates the file that every preceding timestamp in this go program will write to.
+ * Creates the file that every subsequent timestamp in this go program will write to.
  * Input:
  *	 completePath: A string representing the absolute path where all of the timestamps will be stored.
  *	 timeRange: A boolean that will record the start and end time of a timestamp interval if set to true.
