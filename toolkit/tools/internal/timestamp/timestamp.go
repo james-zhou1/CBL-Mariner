@@ -8,7 +8,6 @@ package timestamp
 
 import (
 	"encoding/csv"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -99,7 +98,6 @@ func (info *TimeInfo) RecordToFile(stepName string, actionName string, writer io
 
 // Records a new timestamp and writes it to the corresponding csv file.
 func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
-	fmt.Printf("executing recordToCSV() \n")
 	// If we have not set up TimeInfo, log a warning and do nothing.
 	if *info == (TimeInfo{}) {
 		logger.Log.Warnf("Unable to record timestamp; 'timestamp.Stamp' has not been set up for this file.")

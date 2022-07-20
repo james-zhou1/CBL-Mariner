@@ -9,7 +9,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
@@ -21,8 +20,8 @@ var (
 	scriptName   = app.Flag("script-name", "The name of the current tool.").Required().String()
 	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName   = app.Flag("action-name", "The name of the current action.").Default("").String()
-	fileDir		 = app.Flag("file-dir", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
-	validModes 	 = []string{"n", "r"}
+	fileDir      = app.Flag("file-dir", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
+	validModes   = []string{"n", "r"}
 	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().Enum(validModes...)
 	completePath string
 )
@@ -31,17 +30,10 @@ func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	// Format the script name by removing ".sh".
-	idx := strings.Index(*scriptName, ".")
-	var shortName string
-	if idx < 0 {	// if scriptName does not have a suffix
-		shortName = *scriptName
-	} else {		// if scriptName has a suffix
-		shortName = (*scriptName)[:idx]
-	}
-	completePath = *fileDir + "/" + shortName + ".csv"
+	// Construct the csv path. 
+	completePath = *fileDir + "/" + *scriptName + ".csv"
 
-	// Perform different actions based on the input "mode". 
+	// Perform different actions based on the input "mode".
 	switch *mode {
 	case "n":
 		initialize()

@@ -26,7 +26,7 @@ var (
 )
 
 func main() {
-	timestamp.InitCSV("boilerplate")
+	timestamp.InitCSV("boilerplate.csv")
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
@@ -34,5 +34,5 @@ func main() {
 	logger.InitBestEffort(*logFile, *logLevel)
 
 	logger.Log.Info(hello.World())
-	timestamp.Stamp.RecordToCSV("test step", "test action")
+	timestamp.Stamp.RecordToCSV("execution", "print 'Hello, World!'")
 }
