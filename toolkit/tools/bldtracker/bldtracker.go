@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/logger"
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -22,6 +23,7 @@ var (
 	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName   = app.Flag("action-name", "The name of the current action.").Default("").String()
 	dirPath      = app.Flag("dir-path", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
+	logPath		 = app.Flag("log-path", "Directory for log files").Required().ExistingDir()
 	validModes   = []string{"n", "r"}
 	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().Enum(validModes...)
 	completePath string
@@ -30,9 +32,10 @@ var (
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+	logger.InitBestEffort(*logPath + "/chroot_timestamp.log", "trace")
 
 	// Construct the csv path.
-	completePath = *fileDir + "/" + *scriptName + ".csv"
+	completePath = *dirPath + "/" + *scriptName + ".csv"
 
 	// Perform different actions based on the input "mode".
 	switch *mode {
@@ -43,7 +46,7 @@ func main() {
 		record()
 		break
 	default:
-		fmt.Printf("Invalid call. Mode must be 'n' for initialize or 'r' for record. ")
+		logger.Log.Warnf("Invalid call. Mode must be 'n' for initialize or 'r' for record. ")
 	}
 }
 
@@ -51,7 +54,7 @@ func main() {
 func initialize() {
 	file, err := os.Create(completePath)
 	if err != nil {
-		fmt.Printf("Unable to create file: %s", completePath)
+		logger.Log.Warnf("Unable to create file: %s", completePath)
 	}
 	file.Close()
 
@@ -63,7 +66,7 @@ func initialize() {
 func record() {
 	file, err := os.OpenFile(completePath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Printf("Unable to open file (may not have been created): %s", completePath)
+		logger.Log.Warnf("Unable to open file (may not have been created): %s", completePath)
 	}
 	defer file.Close()
 
