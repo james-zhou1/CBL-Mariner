@@ -195,6 +195,9 @@ include $(SCRIPTS_DIR)/imggen.mk
 #   package-toolkit, clean-package-toolkit
 include $(SCRIPTS_DIR)/toolkit.mk
 
+# Set up for the timestamp feature
+include $(SCRIPTS_DIR)/timestamp.mk
+
 # Each component provides specific clean implementations which clean depends on.
 # They are guaranteed to run first and will verify there are no existing mount points
 # left after a chroot.
