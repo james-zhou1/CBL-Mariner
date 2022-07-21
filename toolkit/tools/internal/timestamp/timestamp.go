@@ -22,14 +22,15 @@ var (
 
 // TimeInfo holds information needed for timestamping a go program.
 type TimeInfo struct {
-	filePath   string        // Path to store all timestamps
-	toolName   string        // Name of the tool (consistent for all timestamps related to this object)
-	stepName   string        // Name of the step
-	actionName string        // Subaction within current step
-	duration   time.Duration // Time to complete the step (ms)
-	startTime  time.Time     // Start time of the step
-	endTime    time.Time     // End time for the step
-	timeRange  bool          // Whether to record start and end time
+	filePath	string			// Path to store all timestamps
+	toolName	string			// Name of the tool (consistent for all timestamps related to this object)
+	stepName 	string			// Name of the step
+	actionName	string 			// Subaction within current step
+	duration	time.Duration	// Time to complete the step (ms)
+	startTime	time.Time		// Start time of the step
+	endTime		time.Time 		// End time for the step
+	timeRange	bool			// Whether to record start and end time
+	writer 		io.Writer		// 
 }
 
 // Create a new instance of timeInfo struct.
@@ -41,13 +42,13 @@ func New(toolName string) *TimeInfo {
 	}
 }
 
-func NewBldTracker(scriptName string, stepName string, actionName string, startTime time.Time) *TimeInfo{
+func NewBldTracker(scriptName string, stepName string, actionName string, startTime time.Time) *TimeInfo {
 	return &TimeInfo{
-		toolName: scriptName,
-		stepName: stepName,
+		toolName:   scriptName,
+		stepName:   stepName,
 		actionName: actionName,
-		startTime: startTime,
-		timeRange: true,
+		startTime:  startTime,
+		timeRange:  true,
 	}
 }
 
@@ -143,7 +144,7 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	info.startTime = info.endTime
 }
 
-// A function that generates a new timestamp and writes it to the csv file. 
+// A function that generates a new timestamp and writes it to the csv file.
 // Also used by bldtracker.go.
 func WriteStamp(file *os.File, info *TimeInfo) {
 	var err error

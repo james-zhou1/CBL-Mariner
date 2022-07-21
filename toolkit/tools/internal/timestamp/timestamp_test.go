@@ -22,7 +22,7 @@ var (
 
 //TestMain found in configuration_test.go.
 
-func initLogger(){
+func initLogger() {
 	logger.InitStderrLog()
 }
 
@@ -69,16 +69,6 @@ func Test_WritetoCSV_noSetUp(t *testing.T) {
 	Stamp.Start()
 	time.Sleep(30 * time.Millisecond)
 	Stamp.RecordToCSV("step 3", "action 1")
-}
-
-func Test_getHomeDir(t *testing.T) {
-	home, _ := os.UserHomeDir()
-	fmt.Printf("%s\n", home)
-	curr, _ := os.Getwd()
-	fmt.Printf("%s\n", curr)
-	testDir := "/home/xuanchen/repos/pod_repo/CBL-Mariner/toolkit"
-	dirLen := len(testDir)
-	fmt.Printf("%s\n", testDir[dirLen-19:])
 }
 
 // func Test_WritetoCSV_noRange(t *testing.T) {

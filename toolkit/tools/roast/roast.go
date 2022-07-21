@@ -103,7 +103,6 @@ func main() {
 }
 
 func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag, tmpDir string, config configuration.Config) (err error) {
-
 	const defaultSystemConfig = 0
 
 	err = os.MkdirAll(tmpDir, os.ModePerm)

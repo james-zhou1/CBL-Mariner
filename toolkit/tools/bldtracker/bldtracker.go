@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-// Tool to track build time during image generation.
+// Tool to initialize a csv file or record a new timestamp
+// for shell scripts during the image-building process.
 
 package main
 
@@ -20,7 +21,7 @@ var (
 	scriptName   = app.Flag("script-name", "The name of the current tool.").Required().String()
 	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName   = app.Flag("action-name", "The name of the current action.").Default("").String()
-	fileDir      = app.Flag("file-dir", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
+	dirPath      = app.Flag("dir-path", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
 	validModes   = []string{"n", "r"}
 	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().Enum(validModes...)
 	completePath string
@@ -66,14 +67,6 @@ func record() {
 	}
 	defer file.Close()
 
-	// writer := csv.NewWriter(file)
-	// defer writer.Flush()
-
-	// Write the timestamp to the csv.
-	// err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
-	// if err != nil {
-	// 	fmt.Printf("Unable to write to file: %s", completePath)
-	// }
-
+	// Write the timestamp to csv file using a helper function from timestamp.go.
 	timestamp.WriteStamp(file, timestamp.NewBldTracker(*scriptName, *stepName, *actionName, time.Now()))
 }

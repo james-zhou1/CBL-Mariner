@@ -24,7 +24,7 @@ chroot_log="$log_path"/$chroot_name.log
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
     --step-name="Start running the script" \
-    --file-dir=$timestamp_dir \
+    --dir-path=$timestamp_dir \
     --mode="n"
 
 install_one_toolchain_rpm () {
@@ -53,7 +53,7 @@ record_timestamp () {
     $bldtracker \
         --script-name="create_worker_chroot.sh" \
         --step-name="$1" \
-        --file-dir=$timestamp_dir \
+        --dir-path=$timestamp_dir \
         --mode="r"
 }
 

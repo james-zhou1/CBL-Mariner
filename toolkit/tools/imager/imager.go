@@ -97,9 +97,7 @@ func main() {
 	timestamp.Stamp.RecordToCSV("Setting up", "")
 
 	err = buildSystemConfig(systemConfig, config.Disks, *outputDir, *buildDir)
-
 	logger.PanicOnError(err, "Failed to build system configuration")
-
 }
 
 func buildSystemConfig(systemConfig configuration.SystemConfig, disks []configuration.Disk, outputDir, buildDir string) (err error) {

@@ -91,8 +91,6 @@ func main() {
 		logger.Log.Panicf("Failed to clone RPM repo. Error: %s", err)
 	}
 
-	// timestamp.Stamp.RecordToCSV("Clone RPM repo", "")
-
 	logger.Log.Info("Configuring downloaded RPMs as a local repository")
 	err = cloner.ConvertDownloadedPackagesIntoRepo()
 	if err != nil {
