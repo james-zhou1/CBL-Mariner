@@ -23,7 +23,7 @@ chroot_log="$log_path"/$chroot_name.log
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="test step" \
+    --step-name="Start running the script" \
     --file-dir=$timestamp_dir \
     --mode="n"
 
@@ -49,6 +49,14 @@ install_one_toolchain_rpm () {
     fi
 }
 
+record_timestamp () {
+    $bldtracker \
+        --script-name="create_worker_chroot.sh" \
+        --step-name="$1" \
+        --file-dir=$timestamp_dir \
+        --mode="r"
+}
+
 rm -rf "$chroot_builder_folder"
 rm -f "$chroot_archive"
 rm -f "$chroot_log"
@@ -62,11 +70,7 @@ while read -r package || [ -n "$package" ]; do
     install_one_toolchain_rpm "$package"
 done < "$packages"
 
-$bldtracker \
-    --script-name="create_worker_chroot.sh" \
-    --step-name="finish adding RPM to worker chroot" \
-    --file-dir=$timestamp_dir \
-    --mode="r"
+record_timestamp "finish adding RPM to worker chroot"
 
 TEMP_DB_PATH=/temp_db
 echo "Setting up a clean RPM database before the Berkeley DB -> SQLite conversion under '$TEMP_DB_PATH'." | tee -a "$chroot_log"
@@ -84,11 +88,7 @@ while read -r package || [ -n "$package" ]; do
     chroot "$chroot_builder_folder" rm $package
 done < "$packages"
 
-$bldtracker \
-    --script-name="create_worker_chroot.sh" \
-    --step-name="finish adding RPM DB entry" \
-    --file-dir=$timestamp_dir \
-    --mode="r"
+record_timestamp "finish adding RPM DB entry"
 
 echo "Overwriting old RPM database with the results of the conversion." | tee -a "$chroot_log"
 chroot "$chroot_builder_folder" rm -rf /var/lib/rpm
@@ -101,11 +101,7 @@ do
     chroot "$chroot_builder_folder" rpm --import "$gpg_key"
 done
 
-$bldtracker \
-    --script-name="create_worker_chroot.sh" \
-    --step-name="finish importing GPG keys" \
-    --file-dir=$timestamp_dir \
-    --mode="r"
+record_timestamp "finish importing GPG keys"
 
 HOME=$ORIGINAL_HOME
 
@@ -127,9 +123,5 @@ else
 fi
 echo "Done creating $chroot_archive." | tee -a "$chroot_log"
 
-$bldtracker \
-    --script-name="create_worker_chroot.sh" \
-    --step-name="Done installing all packages" \
-    --file-dir=$timestamp_dir \
-    --mode="r"
+record_timestamp "Done installing all packages"
 

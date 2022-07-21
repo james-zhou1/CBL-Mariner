@@ -50,7 +50,7 @@ func main() {
 	if err != nil {
 		logger.Log.Fatalf("Failed while loading image configuration '%s': %s", inPath, err)
 	}
-
+	timestamp.Stamp.RecordToCSV("Setting up", "")
 	// Basic validation will occur during load, but we can add additional checking here.
 	err = ValidateConfiguration(config)
 	if err != nil {

@@ -6,12 +6,12 @@
 package main
 
 import (
-	"encoding/csv"
 	"fmt"
 	"os"
 	"time"
 
 	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/exe"
+	"github.com/microsoft/CBL-Mariner/toolkit/tools/internal/timestamp"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -30,7 +30,7 @@ func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
 
-	// Construct the csv path. 
+	// Construct the csv path.
 	completePath = *fileDir + "/" + *scriptName + ".csv"
 
 	// Perform different actions based on the input "mode".
@@ -66,12 +66,14 @@ func record() {
 	}
 	defer file.Close()
 
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
+	// writer := csv.NewWriter(file)
+	// defer writer.Flush()
 
 	// Write the timestamp to the csv.
-	err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
-	if err != nil {
-		fmt.Printf("Unable to write to file: %s", completePath)
-	}
+	// err = writer.Write([]string{*scriptName, *stepName, *actionName, time.Now().Format(time.UnixDate)})
+	// if err != nil {
+	// 	fmt.Printf("Unable to write to file: %s", completePath)
+	// }
+
+	timestamp.WriteStamp(file, timestamp.NewBldTracker(*scriptName, *stepName, *actionName, time.Now()))
 }

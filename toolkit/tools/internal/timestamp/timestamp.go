@@ -41,6 +41,16 @@ func New(toolName string) *TimeInfo {
 	}
 }
 
+func NewBldTracker(scriptName string, stepName string, actionName string, startTime time.Time) *TimeInfo{
+	return &TimeInfo{
+		toolName: scriptName,
+		stepName: stepName,
+		actionName: actionName,
+		startTime: startTime,
+		timeRange: true,
+	}
+}
+
 // Creates the file that every subsequent timestamp in this go program will write to.
 func InitCSV(completePath string) {
 	// Update the global object "Stamp".
@@ -111,13 +121,37 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	}
 	defer file.Close()
 
+	// writer := csv.NewWriter(file)
+	// defer writer.Flush()
+
+	// Writes the timestamp.
+	// info.track()
+	info.stepName = stepName
+	info.actionName = actionName
+	// if info.timeRange {
+	// 	err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
+	// 		info.startTime.Format(time.UnixDate), info.endTime.Format(time.UnixDate)})
+	// } else {
+	// 	err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
+	// }
+	// if err != nil {
+	// 	logger.Log.Warnf("Fail to write to file. %s\n", err)
+	// }
+	WriteStamp(file, info)
+
+	// In case .start() is not called.
+	info.startTime = info.endTime
+}
+
+// A function that generates a new timestamp and writes it to the csv file. 
+// Also used by bldtracker.go.
+func WriteStamp(file *os.File, info *TimeInfo) {
+	var err error
+	info.track()
+
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	// Writes the timestamp.
-	info.track()
-	info.stepName = stepName
-	info.actionName = actionName
 	if info.timeRange {
 		err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
 			info.startTime.Format(time.UnixDate), info.endTime.Format(time.UnixDate)})
@@ -127,7 +161,4 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	if err != nil {
 		logger.Log.Warnf("Fail to write to file. %s\n", err)
 	}
-
-	// In case .start() is not called.
-	info.startTime = info.endTime
 }
