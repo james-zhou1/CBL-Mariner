@@ -22,15 +22,14 @@ var (
 
 // TimeInfo holds information needed for timestamping a go program.
 type TimeInfo struct {
-	filePath	string
-	toolName	string
-	stepName 	string
-	actionName	string
-	duration	time.Duration
-	startTime	time.Time
-	endTime		time.Time
-	timeRange	bool
-	writer 		io.Writer
+	filePath	string		// Path to store all timestamps
+	toolName	string		// Name of the tool (consistent for all timestamps related to this object)
+	stepName 	string		// Name of the step
+	actionName	string		// Subaction within current step
+	duration	time.Duration	// Time to complete the step (ms)
+	startTime	time.Time		// Start time of the step
+	endTime		time.Time		// End time for the step
+	timeRange	bool		// Whether to record start and end time
 }
 
 // Create a new instance of timeInfo struct.
@@ -122,22 +121,10 @@ func (info *TimeInfo) RecordToCSV(stepName string, actionName string) {
 	}
 	defer file.Close()
 
-	// writer := csv.NewWriter(file)
-	// defer writer.Flush()
-
 	// Writes the timestamp.
-	// info.track()
 	info.stepName = stepName
 	info.actionName = actionName
-	// if info.timeRange {
-	// 	err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String(),
-	// 		info.startTime.Format(time.UnixDate), info.endTime.Format(time.UnixDate)})
-	// } else {
-	// 	err = writer.Write([]string{info.toolName, info.stepName, info.actionName, info.duration.String()})
-	// }
-	// if err != nil {
-	// 	logger.Log.Warnf("Fail to write to file. %s\n", err)
-	// }
+	
 	WriteStamp(file, info)
 
 	// In case .start() is not called.
