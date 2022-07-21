@@ -84,6 +84,7 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 	// by the preinstall script
 
 	timestamp.Stamp.Start()
+	defer timestamp.Stamp.RecordToCSV("validateKickStartInstall", "")
 
 	for _, systemConfig := range config.SystemConfigs {
 		if systemConfig.IsKickStartBoot {
@@ -92,8 +93,6 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 			}
 		}
 	}
-
-	timestamp.Stamp.RecordToCSV("validateKickStartInstall", "")
 
 	return
 }
@@ -109,6 +108,7 @@ func validatePackages(config configuration.Config) (err error) {
 	)
 
 	timestamp.Stamp.Start()
+	defer timestamp.Stamp.RecordToCSV("validatePackages", "")
 
 	for _, systemConfig := range config.SystemConfigs {
 		packageList, err := installutils.PackageNamesFromSingleSystemConfig(systemConfig)
@@ -156,8 +156,6 @@ func validatePackages(config configuration.Config) (err error) {
 			}
 		}
 	}
-
-	timestamp.Stamp.RecordToCSV("validatePackages", "")
 
 	return
 }
