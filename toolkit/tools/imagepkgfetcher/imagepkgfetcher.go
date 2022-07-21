@@ -54,7 +54,7 @@ var (
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	
+
 	logger.InitBestEffort(*logFile, *logLevel)
 	timestamp.InitCSV(*timestampFile, true)
 
@@ -69,7 +69,7 @@ func main() {
 	}
 	defer cloner.Close()
 
-	timestamp.Stamp.RecordToCSV("Initialize cloner", "")
+	timestamp.Stamp.RecordToCSV("Initializing cloner", "")
 
 	if !*disableUpstreamRepos {
 		tlsKey, tlsCert := strings.TrimSpace(*tlsClientKey), strings.TrimSpace(*tlsClientCert)
@@ -79,7 +79,7 @@ func main() {
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("Add network files", "")
+	timestamp.Stamp.RecordToCSV("Adding network files", "")
 
 	if strings.TrimSpace(*inputSummaryFile) != "" {
 		// If an input summary file was provided, simply restore the cache using the file.
@@ -100,14 +100,14 @@ func main() {
 		logger.Log.Panicf("Failed to convert downloaded RPMs into a repo. Error: %s", err)
 	}
 
-	timestamp.Stamp.RecordToCSV("Convert pkg to repo", "")
+	timestamp.Stamp.RecordToCSV("Converting pkg to repo", "")
 
 	if strings.TrimSpace(*outputSummaryFile) != "" {
 		err = repoutils.SaveClonedRepoContents(cloner, *outputSummaryFile)
 		logger.PanicOnError(err, "Failed to save cloned repo contents")
 	}
 
-	timestamp.Stamp.RecordToCSV("finishing up", "")
+	timestamp.Stamp.RecordToCSV("Finishing up", "")
 
 }
 
@@ -118,7 +118,7 @@ func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath st
 	if err != nil {
 		return
 	}
-	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Load config with absolute paths")
+	timestamp.Stamp.RecordToCSV("Cloning RPM repo", "Loading config with absolute paths")
 
 	packageVersionsInConfig, err := installutils.PackageNamesFromConfig(cfg)
 	if err != nil {
@@ -135,12 +135,12 @@ func cloneSystemConfigs(cloner repocloner.RepoCloner, configFile, baseDirPath st
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Add kernel packages from KernelOptions")
+	timestamp.Stamp.RecordToCSV("Cloning RPM repo", "Adding kernel packages from KernelOptions")
 
 	// Add any packages required by the install tools
 	packageVersionsInConfig = append(packageVersionsInConfig, installutils.GetRequiredPackagesForInstall()...)
 
-	timestamp.Stamp.RecordToCSV("Clone RPM repo", "Add packages required by install tools")
+	timestamp.Stamp.RecordToCSV("Cloning RPM repo", "Adding packages required by install tools")
 
 	logger.Log.Infof("Cloning: %v", packageVersionsInConfig)
 	// The image tools don't care if a package was created locally or not, just that it exists. Disregard if it is prebuilt or not.

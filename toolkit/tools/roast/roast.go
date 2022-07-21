@@ -42,8 +42,6 @@ var (
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
 
-	
-
 	inputDir  = exe.InputDirFlag(app, "A directory containing a .RAW image or a rootfs directory")
 	outputDir = exe.OutputDirFlag(app, "A destination directory for the output image")
 
@@ -99,7 +97,7 @@ func main() {
 	if err != nil {
 		logger.Log.Panic(err)
 	}
-	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "finishing up")
+	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "finishing up")
 	csvparser.OutputCSVLog(csvparser.FilepathsToArray(filepath.Dir(*timestampFile)))
 
 }
@@ -131,7 +129,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 	convertRequests := make(chan *convertRequest, numberOfArtifacts)
 	convertedResults := make(chan *convertResult, numberOfArtifacts)
 
-	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "set up")
+	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "set up")
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
 	for i := 0; i < workers; i++ {
@@ -163,7 +161,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	close(convertRequests)
 
-	timestamp.Stamp.RecordToCSV("generateImageArtifacts", "convert requests")
+	timestamp.Stamp.RecordToCSV("Generate Image Artifacts", "convert requests")
 
 	failedArtifacts := []string{}
 	for i := 0; i < numberOfArtifacts; i++ {
