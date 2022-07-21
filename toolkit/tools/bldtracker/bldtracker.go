@@ -23,7 +23,7 @@ var (
 	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
 	actionName   = app.Flag("action-name", "The name of the current action.").Default("").String()
 	dirPath      = app.Flag("dir-path", "The folder that stores timestamp csvs.").Required().ExistingDir() // currently must be absolute
-	logPath		 = app.Flag("log-path", "Directory for log files").Required().ExistingDir()
+	logPath      = app.Flag("log-path", "Directory for log files").Required().ExistingDir()
 	validModes   = []string{"n", "r"}
 	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().Enum(validModes...)
 	completePath string
@@ -32,7 +32,7 @@ var (
 func main() {
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	logger.InitBestEffort(*logPath + "/chroot_timestamp.log", "trace")
+	logger.InitBestEffort(*logPath+"/chroot_timestamp.log", "trace")
 
 	// Construct the csv path.
 	completePath = *dirPath + "/" + *scriptName + ".csv"
