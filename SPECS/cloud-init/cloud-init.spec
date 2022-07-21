@@ -1,4 +1,3 @@
-%define cl_services cloud-config.service cloud-config.target cloud-final.service cloud-init.service cloud-init.target cloud-init-local.service
 Summary:        Cloud instance init scripts
 Name:           cloud-init
 Version:        22.2
@@ -386,4 +385,3 @@ make check %{?_smp_mflags}
 
 * Wed Mar 04 2015 Mahmoud Bassiouny <mbassiouny@vmware.com>
 - Initial packaging for Photon
-
