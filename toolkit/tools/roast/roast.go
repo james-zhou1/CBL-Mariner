@@ -161,7 +161,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	close(convertRequests)
 
-	timestamp.Stamp.RecordToCSV("Generate Image Artifacts", "convert requests")
+	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "convert requests")
 
 	failedArtifacts := []string{}
 	for i := 0; i < numberOfArtifacts; i++ {
