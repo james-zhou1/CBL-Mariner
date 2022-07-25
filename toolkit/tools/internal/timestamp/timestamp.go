@@ -42,7 +42,7 @@ func New(toolName string, timeRange bool) *TimeInfo {
  *	 timeRange: A boolean that will record the start and end time of a timestamp interval if set to true.
  */
 func InitCSV(completePath string, timeRange bool) {
-	
+
 	// Update the global object "Stamp".
 	// assume the base directory of completePath ends with .csv for now (possible to be .json later).
 	fileName := filepath.Base(completePath)
@@ -56,7 +56,7 @@ func InitCSV(completePath string, timeRange bool) {
 	// If statement will not be triggered if the user is testing an executable file in a sub-folder.
 	// currDir, _ := os.Getwd()
 	// if currDir[len(currDir) - 19 : ] == "CBL-Mariner/toolkit" {
-	// 	// An image-build is probably running. 
+	// 	// An image-build is probably running.
 	// 	completePath = "tools/internal/timestamp/results/" + completePath
 	// 	err := os.MkdirAll(filepath.Dir(completePath), 0644)
 	// 	if err != nil {

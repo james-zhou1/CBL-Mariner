@@ -39,7 +39,7 @@ func main() {
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	
+
 	logger.InitBestEffort(*logFile, *logLevel)
 	timestamp.InitCSV(*timestampFile, true)
 

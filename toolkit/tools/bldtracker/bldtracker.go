@@ -19,12 +19,12 @@ import (
 )
 
 var (
-	app        = kingpin.New("bldtracker", "A tool that helps track build time of different steps in the makefile.")
-	scriptName = app.Flag("script-name", "The name of the current tool.").Required().String()
-	stepName   = app.Flag("step-name", "The name of the current step.").Required().String()
-	actionName = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
-	filePath   = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().String()                            // currently must be absolute
-	mode       = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
+	app          = kingpin.New("bldtracker", "A tool that helps track build time of different steps in the makefile.")
+	scriptName   = app.Flag("script-name", "The name of the current tool.").Required().String()
+	stepName     = app.Flag("step-name", "The name of the current step.").Required().String()
+	actionName   = app.Flag("action-name", "The name of the current sub-action.").Default("").String()
+	filePath     = app.Flag("file-path", "The folder that stores timestamp csvs.").Required().String()                          // currently must be absolute
+	mode         = app.Flag("mode", "The mode of this tool. Could be 'initialize' ('n') or 'record'('r').").Required().String() // should I set a default?
 	completePath string
 )
 

@@ -21,8 +21,6 @@ var (
 
 	logFile  = exe.LogFileFlag(app)
 	logLevel = exe.LogLevelFlag(app)
-
-	// stamp = timestamp.New("boilerplate", true)
 )
 
 func main() {
@@ -34,6 +32,6 @@ func main() {
 	logger.InitBestEffort(*logFile, *logLevel)
 
 	logger.Log.Info(hello.World())
-	
+
 	timestamp.Stamp.RecordToCSV("test step", "test action")
 }
