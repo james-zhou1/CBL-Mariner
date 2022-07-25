@@ -107,7 +107,7 @@ func main() {
 		logger.PanicOnError(err, "Failed to save cloned repo contents")
 	}
 
-	timestamp.Stamp.RecordToCSV("Finishing up", "")
+	timestamp.Stamp.RecordToCSV("Finish up image pkg fetcher", "")
 
 }
 

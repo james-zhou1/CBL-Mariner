@@ -23,7 +23,7 @@ chroot_log="$log_path"/$chroot_name.log
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="starting create_worker_chroot" \
+    --step-name="Starting create_worker_chroot" \
     --file-path=$timestamp_dir \
     --mode="n"
 
@@ -64,7 +64,7 @@ done < "$packages"
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="finish adding RPM to worker chroot" \
+    --step-name="Finish adding RPM to worker chroot" \
     --file-path=$timestamp_dir \
     --mode="r"
 
@@ -86,7 +86,7 @@ done < "$packages"
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="finish adding RPM DB entry" \
+    --step-name="Finish adding RPM DB entry" \
     --file-path=$timestamp_dir \
     --mode="r"
 
@@ -103,7 +103,7 @@ done
 
 $bldtracker \
     --script-name="create_worker_chroot.sh" \
-    --step-name="finish importing GPG keys" \
+    --step-name="Finish importing GPG keys" \
     --file-path=$timestamp_dir \
     --mode="r"
 

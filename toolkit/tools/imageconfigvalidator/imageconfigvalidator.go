@@ -96,7 +96,7 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("validateKickStartInstall", "")
+	timestamp.Stamp.RecordToCSV("Validate kickstart installation", "")
 
 	return
 }
@@ -160,7 +160,7 @@ func validatePackages(config configuration.Config) (err error) {
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("validatePackages", "")
+	timestamp.Stamp.RecordToCSV("Validate packages", "")
 
 	return
 }
