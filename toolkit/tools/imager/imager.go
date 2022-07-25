@@ -34,7 +34,7 @@ var (
 	outputDir       = app.Flag("output-dir", "Path to directory to place final image.").ExistingDir()
 	liveInstallFlag = app.Flag("live-install", "Enable to perform a live install to the disk specified in config file.").Bool()
 	emitProgress    = app.Flag("emit-progress", "Write progress updates to stdout, such as percent complete and current action.").Bool()
-	timestampFile	= app.Flag("timestamp-file", "File that stores timestamp for this program. ").Required().String()
+	timestampFile   = app.Flag("timestamp-file", "File that stores timestamp for this program. ").Required().String()
 	logFile         = exe.LogFileFlag(app)
 	logLevel        = exe.LogLevelFlag(app)
 )
@@ -197,7 +197,7 @@ func buildSystemConfig(systemConfig configuration.SystemConfig, disks []configur
 	}
 
 	setupChrootDir := filepath.Join(buildDir, setupRoot)
-	timestamp.Stamp.RecordToCSV("buildSystemConfig", "install packages into image")
+	timestamp.Stamp.RecordToCSV("Build System Config", "install packages into image")
 
 	// Create Parition to Mountpoint map
 	mountPointMap, mountPointToFsTypeMap, mountPointToMountArgsMap, diffDiskBuild := installutils.CreateMountPointPartitionMap(partIDToDevPathMap, partIDToFsTypeMap, systemConfig)
@@ -275,7 +275,7 @@ func buildSystemConfig(systemConfig configuration.SystemConfig, disks []configur
 			return
 		}
 	}
-	timestamp.Stamp.RecordToCSV("buildSystemConfig", "Create Parition to Mountpoint map")
+	timestamp.Stamp.RecordToCSV("Build system config", "Create Parition to Mountpoint map")
 
 	// Cleanup encrypted disks
 	if systemConfig.Encryption.Enable {
@@ -285,7 +285,7 @@ func buildSystemConfig(systemConfig configuration.SystemConfig, disks []configur
 			return
 		}
 	}
-	timestamp.Stamp.RecordToCSV("buildSystemConfig", "Cleanup encrypted disks")
+	timestamp.Stamp.RecordToCSV("Finishing up build system config", "Cleanup encrypted disks")
 
 	return
 }

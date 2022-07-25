@@ -97,7 +97,7 @@ func main() {
 	if err != nil {
 		logger.Log.Panic(err)
 	}
-	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "finishing up")
+	timestamp.Stamp.RecordToCSV("Generate Image Artifacts", "finishing up")
 	csvparser.OutputCSVLog(csvparser.FilepathsToArray(filepath.Dir(*timestampFile)))
 
 }
@@ -129,7 +129,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 	convertRequests := make(chan *convertRequest, numberOfArtifacts)
 	convertedResults := make(chan *convertResult, numberOfArtifacts)
 
-	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "set up")
+	timestamp.Stamp.RecordToCSV("Generate Image Artifacts", "set up")
 
 	// Start the workers now so they begin working as soon as a new job is buffered.
 	for i := 0; i < workers; i++ {
@@ -161,7 +161,7 @@ func generateImageArtifacts(workers int, inDir, outDir, releaseVersion, imageTag
 
 	close(convertRequests)
 
-	timestamp.Stamp.RecordToCSV("Generating Image Artifacts", "convert requests")
+	timestamp.Stamp.RecordToCSV("Finish up image artifacts generation", "convert requests")
 
 	failedArtifacts := []string{}
 	for i := 0; i < numberOfArtifacts; i++ {

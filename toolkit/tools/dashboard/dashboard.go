@@ -68,7 +68,7 @@ func main() {
 	bar := uiprogress.AddBar(int(totalProgress)).AppendCompleted()
 
 	bar.PrependFunc(func(b *uiprogress.Bar) string {
-		return fmt.Sprintf("%55s", "Building image:")
+		return fmt.Sprintf("%60s", "Building image:")
 	})
 
 	SetSubBar()
@@ -162,7 +162,7 @@ func SetSubBar() {
 		currFile := targetCSV[i]
 		currFile.bar = uiprogress.AddBar(int(currFile.totalLine)).AppendCompleted()
 		currFile.bar.PrependFunc(func(b *uiprogress.Bar) string {
-			return fmt.Sprintf("%55s", currFile.fileName+": "+currFile.lastStepDesc)
+			return fmt.Sprintf("%60s", currFile.fileName+": "+currFile.lastStepDesc)
 		})
 		wg.Add(1)
 	}

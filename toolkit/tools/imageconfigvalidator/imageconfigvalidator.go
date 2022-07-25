@@ -39,7 +39,7 @@ func main() {
 
 	app.Version(exe.ToolkitVersion)
 	kingpin.MustParse(app.Parse(os.Args[1:]))
-	
+
 	logger.InitBestEffort(*logFile, *logLevel)
 	timestamp.InitCSV(*timestampFile, true)
 
@@ -96,7 +96,7 @@ func validateKickStartInstall(config configuration.Config) (err error) {
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("validateKickStartInstall", "")
+	timestamp.Stamp.RecordToCSV("Validate kickstart installation", "")
 
 	return
 }
@@ -160,7 +160,7 @@ func validatePackages(config configuration.Config) (err error) {
 		}
 	}
 
-	timestamp.Stamp.RecordToCSV("validatePackages", "")
+	timestamp.Stamp.RecordToCSV("Validate packages", "")
 
 	return
 }
